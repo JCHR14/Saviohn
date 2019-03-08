@@ -1,0 +1,378 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Title -->
+    <title>Savio | Sabe lo que no sabes</title>
+
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135596866-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135596866-1');
+    </script>
+    -->
+ 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'img/icon_morado.png' %}">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C500%2C600%2C700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spectral">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+ 
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="{% static 'vendor/icon-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/icon-line/css/simple-line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/icon-line-pro/style.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/icon-hs/style.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fancybox/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/slick-carousel/slick/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/typedjs/typed.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/hs-megamenu/src/hs.megamenu.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/hamburgers/hamburgers.min.css' %}">
+
+    <!-- CSS Unify -->
+    <link rel="stylesheet" href="{% static '/css/unify.css' %}">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}">
+  </head>
+
+  <body>
+    <main>
+      <!-- Header -->
+      <header id="js-header" class="u-header u-header--static">
+        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-10">
+          <nav class="js-mega-menu navbar navbar-toggleable-md">
+            <div class="container">
+              <!-- Responsive Toggle Button -->
+              <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-right-0" type="button"
+                      aria-label="Toggle navigation"
+                      aria-expanded="false"
+                      aria-controls="navBar"
+                      data-toggle="collapse"
+                      data-target="#navBar">
+                <span class="hamburger hamburger--slider">
+                  <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                  </span>
+                </span>
+              </button> 
+              <a href="{% url 'inicio' %}" class="navbar-brand">
+                <img src="{% static 'img/logoSavio.png' %}" alt="Image Description">
+              </a>
+              <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg" id="navBar">
+                <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
+                  
+                  {% if request.user.is_superuser %}
+                    
+                    <li class="nav-item hs-has-sub-menu g-mx-10--lg g-mx-15--xl"
+                        data-animation-in="fadeIn"
+                        data-animation-out="fadeOut"><a id="nav-link--features" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu--features">Administración</a>
+                      <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-default g-brd-top-2 g-min-width-220 g-mt-20 g-mt-10--lg--scrolling" id="nav-submenu--features"
+                          aria-labelledby="nav-link--features">
+                        <li class="dropdown-item"><a class="nav-link" href="{% url 'temas_listado' %}">Temas</a></li>
+                        <li class="dropdown-item"><a class="nav-link" href="{% url 'subtemas_listado' %}">Sub Temas</a></li>
+                        <li class="dropdown-item"><a class="nav-link" href="{% url 'grupos_listado' %}">Grupos</a></li>
+                        <li class="dropdown-item"><a class="nav-link" href="#!">Usuarios</a></li>
+                         <li class="dropdown-item"><a class="nav-link" href="#!">Formato suscripcion</a></li>
+                      </ul>
+                    </li>
+                    
+                  {% endif %}
+                  {% if request.user.id %}
+                    <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'reportes' %}" class="nav-link g-py-7 g-px-0">Reportes</a></li>
+                  {% endif %}
+                  <!--
+                  <li class="nav-item g-mx-10--lg g-mx-15--xl">
+                    <a href="https://igsa.maps.arcgis.com/apps/webappviewer/index.html?id=0004c13b2bd447c8bd9741f68d58ae4e" target="_blank" class="nav-link g-py-7 g-px-0">Geo Clasificados</a>
+                  -->
+                  </li>
+                  <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'quien_soy' %}" class="nav-link g-py-7 g-px-0">Quien Soy</a></li>
+                  <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'contacto' %}" class="nav-link g-py-7 g-px-0">Contacto</a></li>
+                  {% if request.user.id %}
+                    <li class="nav-item hs-has-sub-menu g-mx-10--lg g-mx-15--xl"
+                        data-animation-in="fadeIn"
+                        data-animation-out="fadeOut"><a id="nav-link--perfil" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu--perfil">Perfil</a>
+                      <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-default g-brd-top-2 g-min-width-220 g-mt-20 g-mt-10--lg--scrolling" id="nav-submenu--perfil"
+                          aria-labelledby="nav-link--perfil">
+                        <li class="dropdown-item"><a class="nav-link" href="{% url 'perfil' %}">Hola, {{request.user.first_name}}</a></li>
+                        <li class="dropdown-item"><a class="nav-link" href="{% url 'salir' %}">Salir</a></li>
+                      </ul>
+                    </li>
+                  {% else %}
+                    <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'suscribirse' %}" class="nav-link g-py-7 g-px-0">Suscríbete</a></li>
+                    <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'login' %}" class="nav-link g-py-7 g-px-0">Login</a></li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      {% include 'extras/mensaje.html' %}
+      {% block content %}
+      {% endblock content %}
+      <div class="bg_my_morado  g-color-white-opacity-0_8 g-py-10">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 g-mb-40 g-mb-0--lg">
+              <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
+                <h2 class="u-heading-v2__title h6 text-uppercase mb-0 color_my_amarillo">Lo sabías</h2>
+              </div>
+              {% include 'extras/footerSlider1.html' %}
+              {% include 'extras/footerSlider2.html' %}
+              {% include 'extras/footerSlider3.html' %}
+              {% include 'extras/footerSlider4.html' %}
+            </div>
+            <div class="col-lg-3 col-md-6 g-mb-40 g-mb-0--lg">
+              <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
+                <h2 class="u-heading-v2__title h6 text-uppercase mb-0 color_my_amarillo">Enlaces útiles</h2>
+              </div>
+
+              <nav class="text-uppercase1">
+                <ul class="list-unstyled g-mt-minus-10 mb-0">
+                  <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                    <h4 class="h6 g-pr-20 mb-0">
+                      <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Quienes somos</a>
+                      <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                    </h4>
+                  </li>
+                  <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                    <h4 class="h6 g-pr-20 mb-0">
+                      <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Contacto</a>
+                      <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                    </h4>
+                  </li>
+                  {% if request.user.id %}  
+                    <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                      <h4 class="h6 g-pr-20 mb-0">
+                        <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Reportes</a>
+                        <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                      </h4>
+                    </li>
+                  {% else %}
+                    <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                      <h4 class="h6 g-pr-20 mb-0">
+                        <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Suscríbete</a>
+                        <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                      </h4>
+                    </li>
+                  {% endif %}
+                  
+                </ul>
+              </nav>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
+                <h2 class="u-heading-v2__title h6 text-uppercase mb-0 color_my_amarillo">Nuestros contactos</h2>
+              </div>
+
+              <address class="g-bg-no-repeat g-font-size-12 mb-0">
+                <!-- Location -->
+                <div class="d-flex g-mb-20">
+                  <div class="g-mr-10">
+                    <span class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-color-white-opacity-0_6">
+                      <i class="fa fa-map-marker"></i>
+                    </span>
+                  </div>
+                  <p class="mb-0">Por definir direccion -- <br> Honduras</p>
+                </div>
+                <!-- End Location -->
+
+                <!-- Phone -->
+                <div class="d-flex g-mb-20">
+                  <div class="g-mr-10">
+                    <span class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-color-white-opacity-0_6">
+                      <i class="fa fa-phone"></i>
+                    </span>
+                  </div>
+                  <p class="mb-0">(+504) 0000-0000 <br> (+504) 0000-0000</p>
+                </div>
+                <!-- End Phone -->
+
+                <!-- Email and Website -->
+                <div class="d-flex g-mb-20">
+                  <div class="g-mr-10">
+                    <span class="u-icon-v3 u-icon-size--xs g-bg-white-opacity-0_1 g-color-white-opacity-0_6">
+                      <i class="fa fa-globe"></i>
+                    </span>
+                  </div>
+                  <p class="mb-0">
+                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="mailto:info@savio.com">info@savio.hn</a>
+                  </p>
+                </div>
+                <!-- End Email and Website -->
+              </address>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="bg_my_morado g-color-white-opacity-0_8 g-py-20">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 text-center text-md-left g-mb-10 g-mb-0--md">
+              <div class="d-lg-flex">
+                <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2019 © Todos los derechos reservados.</small>
+                <ul class="u-list-inline">
+                  <li class="list-inline-item">
+                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Politicas de privacidad</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <span>|</span>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Terminos de uso</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <span>|</span>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Ayuda</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-md-4 align-self-center">
+              <ul class="list-inline text-center text-md-right mb-0">
+                <li class="list-inline-item g-mx-10" data-toggle="tooltip" data-placement="top" title="Facebook">
+                  <a href="https://www.facebook.com/saviohn/" class="g-color-white-opacity-0_9 g-color-white--hover">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item g-mx-10" data-toggle="tooltip" data-placement="top" title="Skype">
+                  <a href="https://www.instagram.com/saviolosabe/" class="g-color-white-opacity-0_9 g-color-white--hover">
+                    <i class="fa fa-instagram"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item g-mx-10" data-toggle="tooltip" data-placement="top" title="Twitter">
+                  <a href="https://twitter.com/Saviohn" class="g-color-white-opacity-0_9 g-color-white--hover">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <a class="js-go-to u-go-to-v1" href="#"
+         data-type="fixed"
+         data-position='{
+           "bottom": 15,
+           "right": 15
+         }'
+         data-offset-top="400"
+         data-compensation="#js-header" 
+         data-show-effect="zoomIn">
+          <i class="hs-icon hs-icon-arrow-top"></i>
+      </a>
+    </main>
+    <!-- JS Global Compulsory -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-migrate/jquery-migrate.min.js' %}"></script>
+    <script src="{% static 'vendor/tether.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/bootstrap.min.js' %}"></script>
+
+    <!-- JS Implementing Plugins -->
+    <script src="{% static 'vendor/slick-carousel/slick/slick.js' %}"></script>
+    <script src="{% static 'vendor/hs-megamenu/src/hs.megamenu.js' %}"></script>
+    <script src="{% static 'vendor/fancybox/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'vendor/typedjs/typed.min.js' %}"></script>
+
+    <!-- JS Unify -->
+    <script src="{% static 'js/hs.core.js' %} "></script>
+    <script src="{% static 'js/components/hs.carousel.js' %} "></script>
+    <script src="{% static 'js/components/hs.header.js' %} "></script>
+    <script src="{% static 'js/helpers/hs.hamburgers.js' %} "></script>
+    <script src="{% static 'js/components/hs.tabs.js' %} "></script>
+    <script src="{% static 'js/components/hs.popup.js' %} "></script>
+    <script src="{% static 'js/components/text-animation/hs.text-slideshow.js' %} "></script>
+    <script src="{% static 'js/components/hs.go-to.js' %} "></script>
+
+    <!-- JS Customization -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <!-- JS Plugins Init. -->
+    <script>
+      $(document).on('ready', function () {
+        // initialization of carousel
+        $.HSCore.components.HSCarousel.init('.js-carousel');
+        // initialization of tabs
+        $.HSCore.components.HSTabs.init('[role="tablist"]');
+        // initialization of popups
+        $.HSCore.components.HSPopup.init('.js-fancybox');
+        // initialization of go to
+        $.HSCore.components.HSGoTo.init('.js-go-to');
+        // initialization of text animation (typing)
+        $(".u-text-animation.u-text-animation--typing").typed({
+          strings: [
+            "an awesome template",
+            "perfect template",
+            "just like a boss"
+          ],
+          typeSpeed: 60,
+          loop: true,
+          backDelay: 1500
+        });
+      });
+
+      $(window).on('load', function () {
+        // initialization of header
+        $.HSCore.components.HSHeader.init($('#js-header'));
+        $.HSCore.helpers.HSHamburgers.init('.hamburger');
+
+        // initialization of HSMegaMenu component
+        $('.js-mega-menu').HSMegaMenu({
+          event: 'hover',
+          pageContainer: $('.container'),
+          breakpoint: 991
+        });
+      });
+
+      $(window).on('resize', function () {
+        setTimeout(function () {
+          $.HSCore.components.HSTabs.init('[role="tablist"]');
+        }, 200);
+      });
+    </script>
+
+    <script>
+      $(document).on('ready', function(){
+        $('.footerMySlides').hide();
+        var myIndex = 0;
+        carousel();
+        function carousel() {
+          var i;
+          var x = $('body').find(".footerMySlides");
+          $(".footerMySlides").hide();
+          myIndex++;
+          if (myIndex > x.length) {myIndex = 1}
+          $(x[myIndex-1]).fadeIn();
+          setTimeout(carousel, 6000);
+        }
+
+      });
+    </script>
+
+    {% block javascript %}
+
+    {% endblock %}
+  </body>
+</html>

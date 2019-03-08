@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
+  <section class="g-py-5">
+    <div class="container">
+      {% include 'extras/mensaje.html' %} 
+      <div class="row no-gutters">
+        <div class="col-md-12">
+          <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
+          <h1  style="color:#000;">¿Qué te interesa saber de <span class="color_my_morado">{{tema.tema_nombre}}</span> ?</h1>
+        </div>
+      </div>
+      <hr>
+      <div class="row no-gutters">
+        {% include 'extras_temas/subtemas.html' %}   
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/iframe/core.min.js' %}"></script>
+<script src="{% static 'js/iframe/max.js' %}"></script>
+<script>
+  $('.subtema_detalle').hide();
+  $('#divCargar').hide();
+  
+  $(document).on('ready', function(){
+    $(document).on('click', '.subtema_tipo', function(){
+      $(this).closest('ul').find('li').css('background-color', '#fff');
+      $(this).closest('li').css('background-color', '#e2e2e0');
+      $('#divCargar').hide();
+      $('#idiframe').attr('src', '');
+      $('.subtema_detalle').hide()
+      $('#'+$(this).data('id')).show();
+      $('html, body').animate({scrollTop: $('#'+$(this).data('id')).offset().top}, 1000);
+    });
+
+    $(document).on('click', '.ver_rpt_bi', function(){
+      if($('#rpt_bi-'+$(this).data('id')).val() != ''){
+        $('#divCargar').show();
+        $('#idiframe').attr('src', $('#rpt_bi-'+$(this).data('id')).val());
+        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
+      }
+    });
+
+    $(document).on('click', '.ver_rpt_mapas', function(){
+      if($('#rpt_mapas-'+$(this).data('id')).val() != ''){
+        $('#divCargar').show();
+        $('#idiframe').attr('src', $('#rpt_mapas-'+$(this).data('id')).val());
+        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
+      }
+    });
+
+
+
+
+  });
+</script>
+{% endblock javascript %}

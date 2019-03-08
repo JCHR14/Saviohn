@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+      <section class="g-py-10">
+        <div class="container">
+          <div class="row no-gutters">
+            <div class="col-md-3">
+              
+            </div> 
+            <div class="col-md-9">
+              <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
+                <h2 class="g-font-weight-300 g-mr-10">Editar tema</h2>
+              </div>
+              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{tema.pk}}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Nombre tema</label>
+                      <input type="text" name="tema_nombre" class="form-control form-control-md" required maxlength="20" value="{{tema.tema_nombre}}">
+                      <span class="form-text text-muted">Máximo de caracteres 20</span>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Estado</label>
+                      <select name="tema_estado" class="form-control" required >
+                        <option value="1" {% if tema.tema_estado %} selected {% endif %} >Activo</option>
+                        <option value="0" {% if not tema.tema_estado %} selected {% endif %} >Inactivo</option>
+                      </select>
+                      <span class="form-text text-muted">Si inactiva tema no sera visible para clientes</span>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group g-mb-20">
+                        <label class="g-mb-10 text-uppercase toBold">Descripción tema</label>
+                        <textarea name="tema_descripcion" class="form-control form-control-md" required  maxlength="100" rows="2" style="resize:none;">{{tema.tema_descripcion}}</textarea>
+                        <span class="form-text text-muted">Máximo de caracteres 100</span>
+                      </div>
+                  </div>
+                </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-12 text-right">
+                    <input type="submit" name="btn_submit" id="btnSubmit" class="btn btn-primary" value="Aceptar">
+                  </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+{% endblock content %}
+
+{% block javascript %}
+  <script src="{% static 'js/inputsRequeridos.js' %}"></script>
+  <script>
+    $(document).on('ready', function(){
+    });
+  </script>
+{% endblock javascript %}

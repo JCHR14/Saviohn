@@ -1,0 +1,18 @@
+{% load staticfiles %} 
+<div class="row mySlides 3">
+	<div class="col-md-6">
+		<h1 class="color_my_morado toBold incio_my_title">Sabías que el departamento con más incendios en los últimos cinco años es Olancho</h1>
+		<p>Conocer a fondo el tema nos da el poder realizar un cambio.</p>
+		<br>
+		{% if request.user.id %}
+			<a href="{% url 'detalle_tema' 1 %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado"> Temas de educación  </a>
+		{% else %}
+			<a href="{% url 'login' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">  Ingresa aquí  </a>
+		{% endif %}
+	</div>
+	<div class="col-md-5">
+      <div class="mx-auto g-width-400 g-height-400 g-mb-15">
+        <img class="g-width-400 g-height-400 rounded-circle" src="{% static 'img/slide3.jpg' %}" alt="Image Description">
+      </div>
+    </div>
+</div>

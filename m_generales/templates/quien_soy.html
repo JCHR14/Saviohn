@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <hr class="g-brd-gray-light-v4 my-0">
+  <section class="g-py-100" id="id_quiensoy">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 style="color:#000;">¿Quien Soy?</h1>
+        </div>
+      </div><br><br>
+      <div class="row">
+        <div class="col-md-12">
+          <p id="idDescQuien">Hola soy Savio, estoy aquí para brindarte la información que necesites sobre nuestro gran país Honduras. Se mucho sobre educación, economía, salud y otros temas importantes del país, y lo mejor que toda esta en un mismo lugar y la podrás visualizar en mapas y reportes interactivos. Me encanta la tecnología. <br><br>
+          Únete a mi comunidad y apodérate de toda esta información.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+           {% if request.user.id %}
+            <a href="{% url 'reportes' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado"> Ver temas de interes  </a>
+          {% else %}
+            <a href="{% url 'suscribirse' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">  Suscríbete  </a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </section>
+{% endblock content %}
+{% block javascript %}
+<script>
+  $(document).on('ready', function(){
+  });
+</script>
+{% endblock javascript %}
+

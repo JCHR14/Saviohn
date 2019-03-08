@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <style type="text/css">
+ .div_temas{
+    margin-bottom: 10px;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .div_temas:hover{
+    cursor: pointer; 
+    -webkit-transform: scale(1.05) ;
+    -ms-transform: scale(1.05) ;
+    transform: scale(1.05) ;
+    transition: transform 0.5s ease-in-out;
+  }
+  </style>
+      <section class="g-py-10">
+        <div class="container">
+        <div class="row no-gutters">
+          <div class="col-md-12">
+          	{% include 'extras/slide1.html' %}
+            {% include 'extras/slide2.html' %}
+            {% include 'extras/slide3.html' %}
+          </div>
+        </div> 
+        </div>
+      </section>
+      <hr class="g-brd-gray-light-v4 my-0">
+       
+      <section class="g-py-100">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 style="color:#000;">¿Cuál es el tema de tu interés?</h1>
+            </div>
+          </div><br><br>
+          <div class="row text-center">
+            {% for x in listado_metas %}
+              <div class="col-md-3 div_temas" data-url="{% url 'detalle_tema' x.tema_id %}">
+                <span class="circle"><h3>{{x.tema_nombre}}</h3></span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      <br>
+{% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript">
+    $(document).on('ready', function(){
+        $(document).on('click', '.div_temas', function(){
+          location.href= $(this).data('url');
+        });
+    });
+  </script>
+
+    <script>
+      $(document).on('ready', function(){
+        $('.mySlides').hide();
+        var myIndex = 0;
+        carousel();
+        function carousel() {
+          var i;
+          var x = $('body').find(".mySlides");
+          $(".mySlides").hide();
+          myIndex++;
+          if (myIndex > x.length) {myIndex = 1}
+          $(x[myIndex-1]).fadeIn();
+          setTimeout(carousel, 5000); // Change image every 5 seconds
+        }
+
+      });
+  </script>
+
+{% endblock javascript %}

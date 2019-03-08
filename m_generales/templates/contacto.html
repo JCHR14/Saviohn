@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+      <style type="text/css">
+        #formSuscribirse{
+          border-radius: 25px;
+        }
+        .sus_link:hover{
+          color: white !important;
+        }
+      </style>
+      <!-- Promo Block -->
+      <section class="g-py-10">
+        <div class="container">
+          {% include 'extras/mensaje.html' %} 
+          <div class="row no-gutters">
+            <div class="col-md-3"> 
+              
+            </div> 
+            <div class="col-md-6">
+              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 bg_my_amarillo" id="formSuscribirse" autocomplete="off" method="POST">
+                {% csrf_token %}
+                <h1 class="color_my_morado toBold">Contacto</h1>
+                <p class="toBold color_my_morado">Cuentame como puedo ayudarte.</p>
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 toBold color_my_morado text-uppercase">Nombre</label>
+                  <input type="text" name="cltNombre" class="form-control form-control-md  bg_input_amarillo" maxlength="100" placeholder="Ejem. Luis Garcia">
+                </div>
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 toBold color_my_morado text-uppercase">Asunto</label>
+                  <input type="text" name="cltAsunto" class="form-control form-control-md  bg_input_amarillo" maxlength="100" placeholder="Ejem. Solicitud de información">
+                </div>
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 toBold color_my_morado text-uppercase">Correo Electrónico</label>
+                  <input type="email" name="cltEmail" class="form-control form-control-md  bg_input_amarillo" maxlength="100" placeholder="Ejem. tucorreo@electroni.co">
+                </div>
+
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 toBold color_my_morado text-uppercase">Comentario</label>
+                  <textarea name="cltComentario" class="form-control form-control-md  bg_input_amarillo" style="resize:none;" maxlength="400" rows="4" placeholder="Cuentame tus proyectos" ></textarea>
+                </div>
+      
+                <hr class="g-brd-gray-light-v4 g-mx-minus-30">
+                <div class="form-group text-center">
+                  <div class="col-xs-12 p-b-20">
+                    <button class="btn btn-block btn-lg u-btn-primary g-rounded-50 btn_my_white color_my_morado" type="submit">Enviar</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </section> 
+{% endblock content %}
+
+{% block javascript %}
+<script>
+  $(document).on('ready', function(){
+    $("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md  bg_input_amarillo');
+
+    $('#formSuscribirse').find('label').addClass('g-mb-10 toBold color_my_morado text-uppercase');
+    //$("input[type=text]").addClass('form-control form-control-md rounded-0');
+  });
+</script>
+{% endblock javascript %}

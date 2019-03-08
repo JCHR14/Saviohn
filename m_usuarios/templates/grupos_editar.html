@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2-bootstrap4.css' %}">
+  <section class="g-py-10">
+    <div class="container">
+      <div class="row no-gutters">
+        <div class="col-md-3"></div> 
+        <div class="col-md-9">
+          <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
+            <h2 class="g-font-weight-300 g-mr-10">Editar grupo</h2>
+          </div>
+          <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{gp.id}}">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <labe class="g-mb-10 text-uppercase toBold"l>Nombre</label>
+                  <input type="text" name="name" id="id_name" class="form-control" maxlength="80" required value="{{gp.name}}">
+                </div>
+              </div>                            
+            </div>
+            <div class="row">
+              <div class="col-md-12"> 
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Permisos</label>
+                  <select name="permisos" id="id_permisos" class="form-control select2" multiple="" size="10" style="width:100%;">
+                      {% for x in listado_permisos %}
+                        {% if x in gp.permissions.all %}
+                          <option value="{{x.id}}" selected >{{x.content_type.app_label}} | {{x.codename}} | {{x.name}}</option>
+                        {% else %}
+                          <option value="{{x.id}}">{{x.content_type.app_label}} | {{x.codename}} | {{x.name}}</option>
+                        {% endif %}
+                      {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <input type="submit" name="btn_guardar" class="btn btn-success" value="Guardar">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block javascript %}
+  <script src="{% static 'vendor/select2/dist/js/select2.min.js' %}"></script>
+  <script src="{% static 'js/inputsRequeridos.js' %}"></script>
+  <script>
+    $(document).on('ready', function(){
+      $(".select2").select2({});
+    });
+  </script>
+{% endblock javascript %}

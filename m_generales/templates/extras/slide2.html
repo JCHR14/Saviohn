@@ -1,0 +1,18 @@
+{% load staticfiles %} 
+<div class="row mySlides 2">
+	<div class="col-md-6">
+		<h1 class="color_my_morado toBold incio_my_title">La desertación escolar a incrementado un 57% en los ultimos dos años.</h1>
+		<p>Es tiempo de conocer los números de tu país.</p>
+		<br>
+		{% if request.user.id %}
+			<a href="{% url 'detalle_tema' 1 %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado"> Temas de educación  </a>
+		{% else %}
+			<a href="{% url 'login' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">  Ingresa aquí  </a>
+		{% endif %}
+	</div>
+	<div class="col-md-5">
+      <div class="mx-auto g-width-400 g-height-400 g-mb-15">
+        <img class="g-width-400 g-height-400 rounded-circle" src="{% static 'img/slide2.jpg' %}" alt="Image Description">
+      </div>
+    </div>
+</div>
