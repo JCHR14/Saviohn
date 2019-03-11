@@ -12,9 +12,5 @@ urlpatterns = [
     url(r'^quien-soy/$', views.quien_soy, name='quien_soy'),
     url(r'^contacto/$', views.contacto, name='contacto'), 
     url(r'^activate/(?P<uidb64>.+)/(?P<token>.+)/$',views.activate, name='activate'),
-
-    #url(r'^formato-suscripcion/$', views.formato_suscripcion, name='formato_suscripcion'),
-    #url(r'^reset-password/$', views.reset_password, name='reset_password'), 
-    #url(r'^email-reset-password/$', views.email_reset_password, name='email_reset_password'),
-    #path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
+    url(r'^reset-password/$', views.reset_password, name='reset_password'),
 ]

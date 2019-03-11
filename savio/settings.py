@@ -31,13 +31,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'm_generales',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'm_temas',
     'm_perfil',
     'm_usuarios'
@@ -143,16 +143,20 @@ USE_TZ = True
 USERNAME_MAIL = 'savio@bi-dss.com'#'unotrans@bi-dss.com'
 PASSWORD_MAIL = 'Bidss2018$'#'Bidss2018!'
 SERVER_SMTP = 'smtp.office365.com:587'
-                
+
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'savio@bi-dss.com'
+EMAIL_HOST_PASSWORD = 'Bidss2018$'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Savio Team <savio@bi-dss.com>'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = '/reportes/'
 LOGIN_URL = '/login/'
-
 import django
 django.setup()

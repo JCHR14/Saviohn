@@ -2,6 +2,9 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+def upload_logo(instance, filename):
+    return 'reportes/{0}/{1}'.format(instance.user_creador, filename.encode('ascii', 'ignore'))
+
 class TmsReporte(models.Model):
     reporte_id = models.AutoField(primary_key=True)
     reporte_nombre = models.CharField(max_length=50, blank=True, null=True)
@@ -9,10 +12,10 @@ class TmsReporte(models.Model):
     reporte_estado = models.BooleanField(blank=True, null=True)
     reporte_gratuito = models.BooleanField(blank=True, null=True)
     reporte_url = models.CharField(max_length=5000, blank=True, null=True)
-    reporte_logo = models.CharField(max_length=500, blank=True, null=True)
+    reporte_logo = models.FileField(db_column='reporte_logo', upload_to=upload_logo)
     subtema = models.ForeignKey('TmsSubtema', models.DO_NOTHING, blank=True, null=True)
-    fecha_creacion = models.DateTimeField(blank=True, null=True)
-    fecha_modificacion = models.DateTimeField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(blank=True, null=True, auto_now=True)
     user_creador = models.ForeignKey(User, models.DO_NOTHING, db_column='user_creador', blank=True, null=True)
     user_modificador = models.ForeignKey(User, models.DO_NOTHING, db_column='user_modificador', blank=True, null=True, related_name='reporte_modificador')
 

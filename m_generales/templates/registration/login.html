@@ -12,7 +12,6 @@
       <!-- Promo Block -->
       <section class="g-py-10">
         <div class="container">
-          {% include 'extras/mensaje.html' %}
           <div class="row no-gutters">
             <div class="col-md-3">
               
@@ -38,7 +37,7 @@
                   </div>
                 {% endfor %}
                 <div class="row">
-                  <div class="col-md-12"><a href="#!" class="login_link color_my_morado ">¿Olvidó su contraseña?</a></div>
+                  <div class="col-md-12"><a href="{% url 'password_reset' %}" class="login_link color_my_morado " id="">¿Olvidó su contraseña?</a></div>
                 </div>
                 <!--
                 <div class="text-right">
@@ -62,15 +61,20 @@
           </div>
         </div>
       </section>
+      {% include 'extras/resetPasswordMdl.html' %}
 {% endblock content %}
 
 {% block javascript %}
 <script>
   $(document).on('ready', function(){
-    $("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md  bg_input_amarillo');
+    $('#formLogin').find("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md  bg_input_amarillo');
 
     $('#formLogin').find('label').addClass('g-mb-10 toBold color_my_morado text-uppercase');
     //$("input[type=text]").addClass('form-control form-control-md rounded-0');
+    $(document).on('click', '#idToResetPwd', function(){
+      $('#mdlResetPwd').modal('show');
+
+    });
   });
 </script>
 {% endblock javascript %}

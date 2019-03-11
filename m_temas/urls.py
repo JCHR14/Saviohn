@@ -14,7 +14,8 @@ urlpatterns = [
     path('subtemas-editar/<int:id>', views.subtemas_editar, name='subtemas_editar'),
 
 	path('reportes-listado/<int:subtema>', views.reportes_listado, name='reportes_listado'),  
-	path('reportes-nuevo/<int:subtema>', views.reportes_nuevo, name='reportes_nuevo'),    
+	path('reportes-nuevo/<int:subtema>', views.reportes_nuevo, name='reportes_nuevo'),
+    path('reportes-editar/<int:id>', views.reportes_editar, name='reportes_editar'),    
 
     url(r'^detalle-tema/(?P<codigo>\d+)/$', views.detalle_tema, name='detalle_tema'),
     #url(r'^suscribirse/$', views.suscribirse, name='suscribirse'),

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %} 
 {% block content %}
-  <link rel="stylesheet" type="text/css" href="{% static 'plugins/DataTables/dataTables.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'plugins/DataTables/DataTables/css/dataTables.bootstrap4.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'plugins/DataTables/Buttons/css/buttons.bootstrap4.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/dataTables.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/DataTables/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/Buttons/css/buttons.bootstrap4.min.css' %}">
   <section class="g-py-50">
     <div class="container">
       <div class="row">
@@ -36,11 +36,11 @@
                     <td>{{forloop.counter}}</td>
                     <td>{{x.reporte_nombre}}</td>
                     <td>{{x.reporte_descripcion|truncatewords:5}}</td>
-                    <td>{{x.tema__tema_nombre}}</td>
+                    <td>{{x.subtema__subtema_nombre}}</td>
                     <td>{% if x.reporte_gratuito %} Gratuito {% else %} De paga {% endif %}</td>
                     <td>{% if x.reporte_estado %} Activo {% else %} Inactivo {% endif %}</td>
                     <td>
-                      <a href="#" id="{{x.reporte_id}}"  class="btn btn-secondary btn-xs">Editar</a>
+                      <a href="{% url 'reportes_editar' x.reporte_id %}" id="{{x.reporte_id}}"  class="btn btn-secondary btn-xs">Editar</a>
                     </td>
                   </tr>
                 {% endfor %}
@@ -54,8 +54,8 @@
 {% endblock content %}
 
 {% block javascript %}
-<script src="{% static 'plugins/DataTables/datatables.min.js' %} "></script>
-<script src="{% static 'plugins/DataTables/DataTables/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'vendor/DataTables/datatables.min.js' %} "></script>
+<script src="{% static 'vendor/DataTables/DataTables/js/dataTables.bootstrap4.min.js' %}"></script>
 <script>
   $(document).on('ready', function(){
     $('#idTblReportes').DataTable({

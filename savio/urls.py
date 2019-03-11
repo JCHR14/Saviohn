@@ -21,10 +21,13 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views 
 from m_generales import views as vw
 
+#PasswordResetConfirmView and PasswordResetCompleteView 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^login/$', auth_views.LoginView.as_view(), {'template_name': 'ingreso.html'}, name='login'),
+    #url(r'^login/$', auth_views.LoginView.as_view(), {'template_name': 'ingreso.html'}, name='login'),
     #path('perfil/change-password/',auth_views.PasswordChangeView.as_view(), {'template_name':'change-password.html'}, name="cambio_password"),
+    #path('accounts/reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(), name="cambio_password"),
+    url('^', include('django.contrib.auth.urls')),
     path('', include('m_generales.urls')),
     path('temas/', include('m_temas.urls')),
     path('perfil/', include('m_perfil.urls')),

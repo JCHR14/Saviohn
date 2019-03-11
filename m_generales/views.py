@@ -16,14 +16,11 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.db import connection
-#from django.contrib.auth import update_session_auth_hash
-#from plan.global_utils_function import generar_pass, email
-#from django.utils.encoding import force_unicode
 from django.contrib.humanize.templatetags.humanize import *
 from m_temas.models import *
 from m_generales.forms import SignUpForm
-from savio.tokens import account_activation_token
-from savio.send_email import email_activacion, email_contacto
+from savio.tokens import account_activation_token, account_reset_token
+from savio.send_email import email_activacion, email_contacto, email_resetPwd
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -69,6 +66,7 @@ def suscribirse(request):
 			user = form.save()
 			user.refresh_from_db() # load the profile instance created by the signal
 			user.is_active = False
+			user.email = user.username
 			user.profile.auth_email_confirmed = False#GralMunicipios.objects.get(pk = request.POST['mun'])
 			user.save()
  			
@@ -94,6 +92,26 @@ def suscribirse(request):
 		listado_depto = (GralDepartamentos.objects.values('depto_id', 'depto_nombre').all())
 	return render(request, 'suscribirse.html', {'form': form, 'listado_depto':listado_depto})
   
+def reset_password(request):
+	if request.POST:
+		try:
+			user = User.objects.get(username = request.POST['username'])
+		except Exception as e:
+			messages.danger(request, 'No se pudo obtener usuario')
+			return redirect('login')
+		
+		current_site = get_current_site(request)
+		subject = 'Savio | Recuperación de cuenta'
+		message = render_to_string('extras/resetPassword.html', {
+			'user': user,
+			'domain': current_site.domain,
+			'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+			'token': account_reset_token.make_token(user),
+		})
+		email_resetPwd(user.username, subject, message)
+		messages.info(request, 'Se ha enviado un mensaje a tu correo electrónico')
+		return redirect('login')
+
 def activate(request, uidb64, token):
 	try:
 		uid =  uidb64[15:][:-15]
@@ -147,62 +165,6 @@ def reportes(request):
 		'listado_metas':listado_metas,
 	}
 	return render(request, 'reportes.html', ctx)
-
-
-''' 
-def reset_password(request):
-	if request.method == 'POST':
-		form = PasswordChangeForm(request.user, request.POST)
-		if form.is_valid():
-			user = form.save()
-			update_session_auth_hash(request, user)
-			AuthUserPerfil.objects.filter(pk=request.user.id).update(auth_change_pass=False)
-			return redirect('dashboard')
-		else:
-			return redirect('salir')
-
-def formato_suscripcion(request):
-	current_site = get_current_site(request)
-	ctx={
-		'domain': current_site.domain,
-	}
-	return render(request, 'extras/formato_suscripcion.html', ctx)
-
-@transaction.atomic
-def email_reset_password(request):
-	if request.POST:
-		with transaction.atomic():
-			try:
-				correo = request.POST['txt_correo']
-				if User.objects.filter(username = correo).exists():
-					password = generar_pass()
-					user = User.objects.get(username = correo)
-					if user.is_active == True:
-						user.set_password(password)
-						user.save()
-						us = AuthUserPerfil.objects.get(pk = user.pk)
-						us.auth_change_pass = True
-						us.save()
-						html = 'correos/reset_pass.html'
-						subject = 'Usuario CIE Inversiones'
-						ctx = {
-							'name': user.first_name,
-							'email': user.email,
-							'pass': password,
-							'html':html,
-							'subject':subject
-						}
-						email(ctx)
-						messages.success(request, 'Te hemos enviado un correo electrónico.')
-					else:
-						messages.info(request, 'Usuario ha sido inhabilitado')
-				else:
-					messages.info(request, 'Correo electrónico no existe')
-			except Exception as e:
-				print ('################',e)
-				messages.error(request, 'algo salio mal, intente de nuevo')
-	return redirect('login')
-'''
 
 def handler404(request, *args, **argv):
 	return render(request, 'paginasErrores/404.html', {})

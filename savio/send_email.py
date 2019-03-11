@@ -52,3 +52,27 @@ def email_contacto( emailTo, suject, body):
 	server.quit()
 
 
+def email_resetPwd( emailTo, suject, body):
+	from io import StringIO
+	from django.template.loader import render_to_string
+	from django.template import Context, Template
+	from email import encoders
+	import smtplib
+	import email
+	from email.mime.text import MIMEText
+	from email.mime.multipart import MIMEMultipart
+	msg = MIMEMultipart()
+	msg['Subject'] = suject
+	msg['To'] = emailTo
+	msg['From'] = USERNAME_MAIL
+	context = Context({})
+	template = Template(body)
+	msg.attach(MIMEText(template.render(context).encode('utf-8'), 'html', 'utf-8'))
+	server = smtplib.SMTP(str(SERVER_SMTP))
+	server.starttls()
+	server.ehlo()
+	server.login(USERNAME_MAIL, PASSWORD_MAIL)
+	server.sendmail(USERNAME_MAIL, emailTo, msg.as_string())
+	server.quit()
+
+
