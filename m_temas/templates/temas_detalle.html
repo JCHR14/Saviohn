@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
+  <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
+  <section class="g-py-5">
+    <div class="container">
+      {% include 'extras/mensaje.html' %} 
+      <div class="row no-gutters">
+        <div class="col-md-12">
+          <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
+          <h1  style="color:#000;">¿Qué te interesa saber de <span class="color_my_morado">{{tema.tema_nombre}}</span> ?</h1>
+        </div>
+      </div>
+      <hr>
+        {% include 'extras_temas/subtemas.html' %}
+    </div>
+  </section>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/iframe/core.min.js' %}"></script>
+<script src="{% static 'js/iframe/max.js' %}"></script>
+<script>
+  $(document).ready(function(){
+    $(document).on('click', '.icono_mostrar', function(){
+      if($(this).hasClass('hide')){
+        $this = $(this);
+        var codigo = $(this).data('id');
+        
+        //$(".preloader").fadeIn();
+        $.ajax({
+          type: "GET",
+          data: {
+            codigo : codigo,
+          },
+          url: "{% url 'temas_detalle' 0  %}",
+          success: function(data){
+            showRpt(data.listado, $this);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              alert(textStatus + ': ' + errorThrown +'. '+'Intenta de Nuevo');
+          },
+          timeout: 10000
+        });
+        $(this).closest('.rowMaster').find('.whereLoadRpt').css({"border-top": "1px solid #523192", "padding-top":"20px" });
+        $(this).closest('div.rowMaster').find('div.subtema_col').removeClass('col-md-3');
+        $(this).closest('div.rowMaster').find('div.subtema_col').addClass('col-md-12');
+        $(this).removeClass('fa-plus').removeClass('hide').addClass('fa-minus').addClass('show');
+        $(this).closest('div.rowMaster').find('.border_subtema').addClass('toShowRpt');
+      }else{
+        $(this).closest('div.rowMaster').find('div.subtema_col').removeClass('col-md-12');
+        $(this).closest('div.rowMaster').find('div.subtema_col').addClass('col-md-3');
+        $(this).removeClass('fa-minus').removeClass('show').addClass('fa-plus').addClass('hide');
+        $(this).closest('div.rowMaster').find('div.border_subtema').removeClass('toShowRpt');
+        $(this).closest('.rowMaster').find('.whereLoadRpt').empty();
+        $(this).closest('.rowMaster').find('.whereLoadRpt').css({"border-top": "none", "padding-top":""});
+      }
+    });
+
+    function showRpt(data, $where){
+      $.each(data, function(key, val){
+        $($where).closest('.rowMaster').find('.whereLoadRpt').append([
+          '<div class="col-md-3 text-center rptLink">',
+            '<div class="rptLogo" >',
+            '<img src="/media/'+val.reporte_logo+'" class="imglogo">',
+            '</div>',
+            '<h4 class="h5">'+ val.reporte_nombre+'<h4>',
+          '</div>'
+          ].join(''));
+      });
+    }
+  });
+
+</script>
+<script>
+  $(document).ready(function(){
+    
+  });
+
+</script>
+<!--
+<script>
+  $('.subtema_detalle').hide();
+  $('#divCargar').hide();
+  
+  $(document).on('ready', function(){
+    $(document).on('click', '.subtema_tipo', function(){
+      $(this).closest('ul').find('li').css('background-color', '#fff');
+      $(this).closest('li').css('background-color', '#e2e2e0');
+      $('#divCargar').hide();
+      $('#idiframe').attr('src', '');
+      $('.subtema_detalle').hide()
+      $('#'+$(this).data('id')).show();
+      $('html, body').animate({scrollTop: $('#'+$(this).data('id')).offset().top}, 1000);
+    });
+
+    $(document).on('click', '.ver_rpt_bi', function(){
+      if($('#rpt_bi-'+$(this).data('id')).val() != ''){
+        $('#divCargar').show();
+        $('#idiframe').attr('src', $('#rpt_bi-'+$(this).data('id')).val());
+        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
+      }
+    });
+
+    $(document).on('click', '.ver_rpt_mapas', function(){
+      if($('#rpt_mapas-'+$(this).data('id')).val() != ''){
+        $('#divCargar').show();
+        $('#idiframe').attr('src', $('#rpt_mapas-'+$(this).data('id')).val());
+        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
+      }
+    });
+
+
+
+
+  });
+</script>
+-->
+{% endblock javascript %}

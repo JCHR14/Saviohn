@@ -8,35 +8,35 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <a href="{% url 'subtemas_nuevo' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">Crear sub tema</a>
+          <a href="#!" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">Crear usuario</a>
         </div>
         <div class="col-md-9">
-            <h2 class="g-font-weight-300">Listado de Sub Temas</h2>
+            <h2 class="g-font-weight-300">Listado de Usuarios</h2>
         </div>
       </div> 
       <div class="row">
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table" id="idTblSubTemas">
+            <table class="table" id="idTblUsuarios">
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Username</th>
                   <th>Nombre</th>
-                  <th>Tema</th>
                   <th>Estado</th>
                   <th></th>
                 </tr>
+
               </thead>
               <tbody>
                 {% for x in listado %}
                   <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{x.subtema_nombre}}</td>
-                    <td>{{x.tema__tema_nombre}}</td>
-                    <td>{% if x.subtema_estado %} Activo {% else %} Inactivo {% endif %}</td>
+                    <td>{{x.username}}</td>
+                    <td>{{x.first_name}} {{x.last_name}}</td>
+                    <td>{% if x.is_active %} Activo {% else %} Inactivo {% endif %}</td>
                     <td>
-                      <a href="{% url 'subtemas_editar' x.subtema_id %}"  class="btn btn-secondary btn-xs">Editar</a>
-                      <a href="{% url 'reportes_listado' x.subtema_id %}"  class="btn btn-secondary btn-xs">Reportes</a>
+                      <a href="#!" id="{{x.id}}"  class="btn btn-secondary btn-xs">Editar</a>
                     </td>
                   </tr>
                 {% endfor %}
@@ -54,7 +54,7 @@
 <script src="{% static 'vendor/DataTables/DataTables/js/dataTables.bootstrap4.min.js' %}"></script>
 <script>
   $(document).on('ready', function(){
-    $('#idTblSubTemas').DataTable({
+    $('#idTblUsuarios').DataTable({
       "language":{
           "sProcessing":     "Procesando...",
           "sLengthMenu":     "Mostrar _MENU_ registros",

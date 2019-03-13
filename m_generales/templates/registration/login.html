@@ -61,20 +61,13 @@
           </div>
         </div>
       </section>
-      {% include 'extras/resetPasswordMdl.html' %}
 {% endblock content %}
 
 {% block javascript %}
 <script>
   $(document).on('ready', function(){
     $('#formLogin').find("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md  bg_input_amarillo');
-
-    $('#formLogin').find('label').addClass('g-mb-10 toBold color_my_morado text-uppercase');
-    //$("input[type=text]").addClass('form-control form-control-md rounded-0');
-    $(document).on('click', '#idToResetPwd', function(){
-      $('#mdlResetPwd').modal('show');
-
-    });
+    $('#formLogin').find('label').addClass('g-mb-10 toBold color_my_morado text-uppercase');  
   });
 </script>
 {% endblock javascript %}

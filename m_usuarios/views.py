@@ -86,3 +86,13 @@ def grupos_editar(request, id):
 		}
 		return render(request, 'grupos_editar.html', ctx )
 
+@login_required()
+def usuarios_listado(request):
+	listado = User.objects.values('id', 'username', 'first_name', 'last_name', 'email', 'is_active').all().order_by('-is_active')
+	ctx = {
+		'listado':listado,
+	}
+	return render(request, 'usuarios_listado.html', ctx)
+
+
+

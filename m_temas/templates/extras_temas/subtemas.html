@@ -1,87 +1,28 @@
 {% load staticfiles %} 
-<div class="col-md-2">
-	<ul class="list-unstyled">		
-		{% for x in listado_subtemas %}
-			<li class="g-brd-around g-brd-morado g-pa-20 g-mb-minus-1 li_subtema">
-				<div class="media">
-					<div class="media-body">
-						<a href="#!" data-id="rpt_tipos-{{x.subtema_id}}" class="subtema_tipo">
-							<h4 class=" h5 m-0 bg_subtema color_my_amarillo">
-								<div class="row">
-									<div class="col-md-9">
-										<strong class="color_my_morado">{{x.subtema_nombre}}</strong>
-									</div>
-									<div class="col-md-1">
-										<i class="fa fa-plus"></i>
-									</div>
-								</div>
-							</h4>
-						</a>	
+{% for x in listado_subtemas  %} 
+	<div class="row rowMaster">
+		<div class="col-md-3 subtema_col" >
+			<div class="border_subtema" data-id="rpt_tipos-{{x.subtema_id}}">
+				<div class="row">
+					<div class="col-md-9">
+						<h4><strong class="h4 color_my_morado ">{{x.subtema_nombre}}</strong></h4>
+					</div>
+					<div class="col-md-3 text-right">
+						<span class="h4"><i class="fa fa-plus color_my_amarillo icono_mostrar hide" data-id="{{x.subtema_id}}"></i></span>
+					</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row whereLoadRpt">
+							
+						</div>
 					</div>
 				</div>
-			</li>
-		{% endfor %}
-	</ul>
-</div> 
-<div class="col-md-10">
-	{% for x in listado_subtemas %} 
-		<div class="row text-center subtema_detalle" id="rpt_tipos-{{x.subtema_id}}" >
-			{% if x.subtema_powerbi %}
-				<div class="col-md-4 text-center ">
-	                <div class="text-center div_temas">
-	                  	<span class="d-inline-block u-icon-v3 u-icon-size--l bg_my_amarillo g-color-white rounded-circle g-mb-10">
-	                    	<i class="fa fa-bar-chart"></i>
-	                  	</span>
-	                  	<h4 class="h6 g-color-gray-dark-v2 g-font-weight-600 text-uppercase mb-3"><a href="#!" class="ver_rpt_bi " data-id="{{x.subtema_id}}">REPORTES</a></h4>
-	                </div>
-	            </div>
-	            <input type="hidden" name="" id="rpt_bi-{{x.subtema_id}}" value="{{x.subtema_powerbi_link}}">
-	        {% endif %} 
-
-	        {% if x.subtema_opcion2 %}
-	        	<div class="col-md-4 text-center ">
-	                <div class="text-center div_temas">
-	                    	<img src="{% static 'img/icon_mapas.png' %}" width="60px" class="icon_img">
-	                  	<h4 class="h6 g-color-gray-dark-v2 g-font-weight-600 text-uppercase mb-3 "><a href="#!" class="ver_rpt_mapas" data-id="{{x.subtema_id}}" >MAPAS</a></h4>
-	                </div>
-	            </div>
-	            <input type="hidden" name="" id="rpt_mapas-{{x.subtema_id}}" value="{{x.subtema_opcion2_link}}">
-	        {% endif %}
-
-	        {% if x.subtema_opcion3 %}
-	        	<div class="col-md-4 text-center ">
-	                <div class="text-center div_temas">
-	                    	<img src="{% static 'img/icon_geo_analisis.png' %}" width="60px" class="icon_img">
-	                  	<h4 class="h6 g-color-gray-dark-v2 g-font-weight-600 text-uppercase mb-3 "><a href="#!" class="">GEO ANÁLISIS</a></h4>
-	                </div>
-	            </div>
-	        {% endif %}
-		</div> 
-	{% endfor %}
-	<br> <br>
-	<!--
-	<div class="row"> 
-		<div class="col-md-1"></div>
-		<div class="col-md-11" id="divCargar">
-			<div class="embed-responsive embed-responsive-16by9">
-				<iframe class="embed-responsive-item" width="933" height="600" frameborder="0" allowFullScreen="true"  src="" id="idiframe"></iframe>
 			</div>
 		</div>
 	</div>
--->
-	<div class="row">
-		<div class="col-md-1"></div>
-		<div class="card align-content-center col-md-11 " id="divCargar">
-			<div class="card-body box">				
-				<div class="embed-container embed-responsive embed-responsive-16by9">               
-					<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="" id="idiframe" class="embed-responsive-item"></iframe>  
-				</div> 
-				<button type="button" class="btn btn-primary m-3 full-box">Maximizar</button>  
-			</div>
-		</div>
-		<br><br>
-	</div>
-</div>
+{% endfor %}
 
 
 	

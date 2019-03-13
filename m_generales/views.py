@@ -15,7 +15,7 @@ from django.db.models import Count, Sum
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.db import connection
+from django.db import connection 
 from django.contrib.humanize.templatetags.humanize import *
 from m_temas.models import *
 from m_generales.forms import SignUpForm

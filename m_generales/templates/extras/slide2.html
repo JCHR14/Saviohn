@@ -5,7 +5,7 @@
 		<p>Es tiempo de conocer los números de tu país.</p>
 		<br>
 		{% if request.user.id %}
-			<a href="{% url 'detalle_tema' 1 %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado"> Temas de educación  </a>
+			<a href="{% url 'temas_detalle' 1 %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado"> Temas de educación  </a>
 		{% else %}
 			<a href="{% url 'login' %}" class="btn btn-md u-btn-primary g-rounded-50 g-mr-10 g-mb-15 bg_my_morado">  Ingresa aquí  </a>
 		{% endif %}

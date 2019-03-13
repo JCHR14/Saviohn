@@ -12,13 +12,16 @@ class TmsReporte(models.Model):
     reporte_estado = models.BooleanField(blank=True, null=True)
     reporte_gratuito = models.BooleanField(blank=True, null=True)
     reporte_url = models.CharField(max_length=5000, blank=True, null=True)
+    reporte_user = models.CharField(max_length=100, blank=True, null=True)
+    reporte_pwd = models.CharField(max_length=100, blank=True, null=True)
+    reporte_need_auth = models.BooleanField(blank=True, null=True)
     reporte_logo = models.FileField(db_column='reporte_logo', upload_to=upload_logo)
     subtema = models.ForeignKey('TmsSubtema', models.DO_NOTHING, blank=True, null=True)
     fecha_creacion = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     fecha_modificacion = models.DateTimeField(blank=True, null=True, auto_now=True)
     user_creador = models.ForeignKey(User, models.DO_NOTHING, db_column='user_creador', blank=True, null=True)
     user_modificador = models.ForeignKey(User, models.DO_NOTHING, db_column='user_modificador', blank=True, null=True, related_name='reporte_modificador')
-
+ 
     class Meta:
         managed = False
         db_table = 'tms_reporte'

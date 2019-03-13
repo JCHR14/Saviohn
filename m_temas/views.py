@@ -28,6 +28,7 @@ def floatcomma(value):
 	intpart = intcomma(intpart) 
 	return ".".join([intpart, dec])
 
+# MODULO DE TEMAS
 @login_required()
 def temas_listado(request):
 	listado = list(TmsTema.objects.values(
@@ -104,13 +105,35 @@ def temas_editar(request, id):
 		return render(request, 'temas_editar.html', ctx)
 
 @login_required()
+def temas_detalle(request, id):
+	if request.is_ajax():
+		import json
+		codigo = request.GET['codigo']
+		listado = list(TmsReporte.objects.values('reporte_id','reporte_nombre',
+			'reporte_descripcion','reporte_logo').filter(subtema = codigo, reporte_estado = True))
+		data = json.dumps({
+			'listado':listado,
+		})
+		return HttpResponse(data, content_type='application/json')
+	
+	tema = TmsTema.objects.get(pk = id)
+	listado_subtemas =list(TmsSubtema.objects.values().filter(tema = id, subtema_estado = True))
+	ctx={
+		'tema':tema,
+		'listado_subtemas':listado_subtemas,		
+	}
+	return render(request, 'temas_detalle.html', ctx)
+# FINAL DE MODULO DE TEMAS 
+
+
+# MODULO DE SUBTEMAS
+@login_required()
 def subtemas_listado(request):
 	listado = list( TmsSubtema.objects.values('subtema_id', 'subtema_nombre', 'tema__tema_nombre', 'subtema_estado').all().order_by('-subtema_estado', 'tema__tema_nombre'))
 	ctx ={
 		'listado':listado
 	}
 	return render(request, 'subtemas_listado.html', ctx)
-
 
 @login_required()
 @transaction.atomic
@@ -141,7 +164,6 @@ def subtemas_nuevo(request):
 			'listado':listado,
 		}
 		return render(request, 'subtemas_nuevo.html', ctx)
-
 
 @login_required()
 @transaction.atomic
@@ -188,8 +210,10 @@ def subtemas_editar(request, id):
 			'sub':sub
 		}
 		return render(request, 'subtemas_editar.html', ctx)
+# FINAL DE MODULO DE SUBTEMAS
 
 
+# MODULOS DE REPORTES
 @login_required()
 def reportes_listado(request, subtema):
 	try:
@@ -208,7 +232,6 @@ def reportes_listado(request, subtema):
 		'sub':sub
 	}
 	return render(request, 'reportes_listado.html', ctx)
-
  
 @login_required()
 @transaction.atomic
@@ -253,8 +276,6 @@ def reportes_nuevo(request, subtema):
 			'sub':sub
 		}
 		return render(request, 'reportes_nuevo.html', ctx)
-
-
 
 @login_required()
 @transaction.atomic
@@ -304,13 +325,5 @@ def reportes_editar(request, id):
 			'rpt':rpt
 		}
 		return render(request, 'reportes_editar.html', ctx)
+# FINAL MODULOS DE REPORTES
 
-@login_required()
-def detalle_tema(request, codigo):
-	tema = TmsTema.objects.get(pk = codigo)
-	listado_subtemas =list(GralSubtema.objects.values().filter(tema = codigo))
-	ctx={
-		'tema':tema,
-		'listado_subtemas':listado_subtemas,		
-	}
-	return render(request, 'detalle_tema.html', ctx)
