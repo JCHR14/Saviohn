@@ -216,6 +216,16 @@ def subtemas_editar(request, id):
 # MODULOS DE REPORTES
 @login_required()
 def reportes_listado(request, subtema):
+	if request.is_ajax():
+		import json
+		codigo = request.GET['codigo']
+		listado = TmsReporte.objects.values('reporte_id','reporte_nombre',
+			'reporte_descripcion', 'reporte_url').get(pk = codigo)
+		data = json.dumps({
+			'listado':listado,
+		})
+		return HttpResponse(data, content_type='application/json')
+
 	try:
 		sub = TmsSubtema.objects.get(pk = subtema)
 	except Exception as e:

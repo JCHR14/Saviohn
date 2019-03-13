@@ -26,8 +26,6 @@
       if($(this).hasClass('hide')){
         $this = $(this);
         var codigo = $(this).data('id');
-        
-        //$(".preloader").fadeIn();
         $.ajax({
           type: "GET",
           data: {
@@ -53,6 +51,7 @@
         $(this).removeClass('fa-minus').removeClass('show').addClass('fa-plus').addClass('hide');
         $(this).closest('div.rowMaster').find('div.border_subtema').removeClass('toShowRpt');
         $(this).closest('.rowMaster').find('.whereLoadRpt').empty();
+        $(this).closest('.rowMaster').find('.iframediv').remove();
         $(this).closest('.rowMaster').find('.whereLoadRpt').css({"border-top": "none", "padding-top":""});
       }
     });
@@ -60,7 +59,7 @@
     function showRpt(data, $where){
       $.each(data, function(key, val){
         $($where).closest('.rowMaster').find('.whereLoadRpt').append([
-          '<div class="col-md-3 text-center rptLink">',
+          '<div class="col-md-3 text-center rptLink" data-id="'+val.reporte_id+'">',
             '<div class="rptLogo" >',
             '<img src="/media/'+val.reporte_logo+'" class="imglogo">',
             '</div>',
@@ -70,50 +69,39 @@
       });
     }
   });
-
 </script>
 <script>
   $(document).ready(function(){
-    
-  });
-
-</script>
-<!--
-<script>
-  $('.subtema_detalle').hide();
-  $('#divCargar').hide();
-  
-  $(document).on('ready', function(){
-    $(document).on('click', '.subtema_tipo', function(){
-      $(this).closest('ul').find('li').css('background-color', '#fff');
-      $(this).closest('li').css('background-color', '#e2e2e0');
-      $('#divCargar').hide();
-      $('#idiframe').attr('src', '');
-      $('.subtema_detalle').hide()
-      $('#'+$(this).data('id')).show();
-      $('html, body').animate({scrollTop: $('#'+$(this).data('id')).offset().top}, 1000);
+    $(document).on('click', '.rptLink', function(){
+      $this = $(this);
+      var codigo = $(this).data('id');
+      $.ajax({
+          type: "GET",
+          data: {
+            codigo : codigo,
+          },
+          url: "{% url 'reportes_listado' 0 %}",
+          success: function(data){
+            setIframe(data.listado, $this);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              alert(textStatus + ': ' + errorThrown +'. '+'Intenta de Nuevo');
+          },
+          timeout: 10000
+        });
     });
-
-    $(document).on('click', '.ver_rpt_bi', function(){
-      if($('#rpt_bi-'+$(this).data('id')).val() != ''){
-        $('#divCargar').show();
-        $('#idiframe').attr('src', $('#rpt_bi-'+$(this).data('id')).val());
-        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
-      }
-    });
-
-    $(document).on('click', '.ver_rpt_mapas', function(){
-      if($('#rpt_mapas-'+$(this).data('id')).val() != ''){
-        $('#divCargar').show();
-        $('#idiframe').attr('src', $('#rpt_mapas-'+$(this).data('id')).val());
-        $('html, body').animate({scrollTop: $(this).closest('.subtema_detalle').offset().top}, 1000);
-      }
-    });
-
-
-
+    function setIframe(data, $where){
+      $($where).closest('.rowMaster').find('.border_subtema').append([
+        '<div class="row iframediv">',
+          '<div class="col-md-12 text-center" >',
+            '<div class="embed-responsive embed-responsive-16by9">',
+              '<iframe class="embed-responsive-item" src="'+data.reporte_url+'" allowfullscreen></iframe>',
+              '</div>',
+          '</div>',
+        '</div>'
+        ].join(''));
+    }
 
   });
 </script>
--->
 {% endblock javascript %}
