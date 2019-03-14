@@ -37,7 +37,7 @@
           </div><br><br>
           <div class="row text-center">
             {% for x in listado_metas %}
-              <div class="col-md-3 div_temas" data-url="{% url 'detalle_tema' x.tema_id %}">
+              <div class="col-md-3 div_temas" data-url="{% url 'temas_detalle' x.tema_id %}">
                 <span class="circle"><h3>{{x.tema_nombre}}</h3></span>
               </div>
             {% endfor %}
@@ -55,23 +55,21 @@
         });
     });
   </script>
-
-    <script>
-      $(document).on('ready', function(){
-        $('.mySlides').hide();
-        var myIndex = 0;
-        carousel();
-        function carousel() {
-          var i;
-          var x = $('body').find(".mySlides");
-          $(".mySlides").hide();
-          myIndex++;
-          if (myIndex > x.length) {myIndex = 1}
-          $(x[myIndex-1]).fadeIn();
-          setTimeout(carousel, 5000); // Change image every 5 seconds
-        }
-
-      });
+  <script>
+    $(document).on('ready', function(){
+      $('.mySlides').hide();
+      var myIndex = 0;
+      carousel();
+      function carousel() {
+        var i;
+        var x = $('body').find(".mySlides");
+        $(".mySlides").hide();
+        myIndex++;
+        if (myIndex > x.length) {myIndex = 1}
+        $(x[myIndex-1]).fadeIn();
+        setTimeout(carousel, 5000); // Change image every 5 seconds
+      }
+    });
   </script>
 
 {% endblock javascript %}

@@ -89,6 +89,7 @@
         });
     });
     function setIframe(data, $where){
+      $($where).closest('.rowMaster').find('.iframediv').remove();
       $($where).closest('.rowMaster').find('.border_subtema').append([
         '<div class="row iframediv">',
           '<div class="col-md-12 text-center" >',

@@ -2,19 +2,19 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from django.http import *
-#from django.urls import reverse
+from django.urls import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, Group, Permission
-#from m_generales.models import *
+from m_usuarios.forms import *
 import os 
 from django.conf import settings
 from django.db.models import Count, Sum 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+#from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.humanize.templatetags.humanize import *
@@ -93,6 +93,63 @@ def usuarios_listado(request):
 		'listado':listado,
 	}
 	return render(request, 'usuarios_listado.html', ctx)
+
+@login_required()
+def usuarios_detalle(request, id):
+	if request.POST:
+		pass
+	else:
+		try:
+			us = User.objects.get(pk = id)
+		except Exception as e:
+			print(e)
+			messages.error(request, 'Ocurrió un problema al obtener usuario')
+			return redirect('usuarios_listado')
+		ctx = {
+			'us': us 
+		}
+		return render(request, 'usuarios_detalle.html', ctx)
+
+@login_required()
+@transaction.atomic
+def usuarios_reset_pwd(request, id):
+	if request.POST:
+		user = User.objects.get(pk = id)
+		form = AdminPasswordChangeForm(user, request.POST)
+
+		if form.is_valid():
+			form.save() 
+			messages.success(request, 'Cambio de contraseña realizado con éxito')
+
+		else:
+			messages.error(request, 'No se pudo realizar el cambio de la contraseña')
+			try:
+				user = User.objects.get(pk = id)
+				form = AdminPasswordChangeForm(user)
+			except Exception as e:
+				print(e)
+				messages.error(request, 'Ocurrió un problema al obtener usuario')
+				return redirect('usuarios_listado')
+			ctx = {
+				'form': form,
+				'user': user, 
+			}
+			return render(request, 'usuarios_reset_pwd.html', ctx)
+
+		return redirect(reverse('usuarios_detalle', kwargs={'id': id}))
+
+	else:
+		try:
+			user = User.objects.get(pk = id)
+			form = AdminPasswordChangeForm(user)
+		except Exception as e:
+			print(e)
+			messages.error(request, 'Ocurrió un problema al obtener usuario')
+			return redirect('usuarios_listado')
+		ctx = {
+			'form': form,'user': user, 
+		}
+		return render(request, 'usuarios_reset_pwd.html', ctx)
 
 
 
