@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <section class="g-py-10">
+    <div class="container">
+      <div class="row no-gutters">
+        <div class="col-md-3"></div> 
+        <div class="col-md-9">
+          <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
+            <h2 class="g-font-weight-300 g-mr-10">Cambiar Contraseña: {{user.username}}</h2><br>
+          </div>
+          <h4 class="g-font-weight-300 g-mr-10">Introduzca una nueva contraseña para el usuario {{user.username}}</h4>
+          <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST" id="formEditarUser">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                {% for field in form %}
+                  <div class="form-group g-mb-20">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    
+                    {% if field.help_text %}
+                      <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                    </p>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <input type="submit" name="btn_guardar" class="btn btn-success" value="Guardar">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block javascript %}
+  <script src="{% static 'js/inputsRequeridos.js' %}"></script>
+  <script>
+    $(document).on('ready', function(){
+      $("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md');
+
+    $('#formEditarUser').find('label').addClass('g-mb-10 toBold text-uppercase'); 
+    });
+  </script>
+{% endblock javascript %}
