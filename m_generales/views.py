@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
-from django.http import * 
+from django.http import *  
 #from django.urls import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -87,10 +87,12 @@ def suscribirse(request):
 			email_activacion(user.username, subject, message)
 			messages.info(request, 'Se ha enviado un mensaje a tu correo electrónico')
 			return redirect('inicio')
+		else:
+			return render(request, 'suscribirse.html', {'form': form})
+
 	else:
 		form = SignUpForm()
-		listado_depto = (GralDepartamentos.objects.values('depto_id', 'depto_nombre').all())
-	return render(request, 'suscribirse.html', {'form': form, 'listado_depto':listado_depto})
+	return render(request, 'suscribirse.html', {'form': form})
   
 def reset_password(request):
 	if request.POST:
@@ -128,7 +130,7 @@ def activate(request, uidb64, token):
 		auth_login(request, user)
 		return redirect('reportes')
 	else:
-		return  redirect('inicio') #render(request, 'account_activation_invalid.html')
+		return  redirect('inicio')
 
 def quien_soy(request):
 	ctx={}

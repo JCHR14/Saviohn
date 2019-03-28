@@ -20,7 +20,7 @@ from django.conf.urls import handler404, handler500, url, include
 from django.conf import settings
 from django.contrib.auth import views as auth_views 
 from m_generales import views as vw
-
+ 
 #PasswordResetConfirmView and PasswordResetCompleteView 
 urlpatterns = [
     path('admin/', admin.site.urls),

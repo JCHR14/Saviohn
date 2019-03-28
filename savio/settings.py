@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-from django.contrib.messages import constants as messages 
+from django.contrib.messages import constants as messages  
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -24,7 +24,7 @@ SECRET_KEY = 'fdj=h9f)giw09xu$zb*egy@0y_9=tp=$u118xl!u+^qblp^%x('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+ 
 ALLOWED_HOSTS = ['*']
 
  
