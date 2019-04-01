@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% load staticfiles %} 
+{% load staticfiles %}
 {% block content %}
   <section class="g-mb-100">
     <div class="container">
       <div class="row">
         {% include 'perfil_menu.html' %}
-        
         <div class="col-lg-9">
           <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
             <h2 class="g-font-weight-300 g-mr-10">{{request.user.first_name}} {{request.user.last_name}}</h2>
           </div>
-          <ul class="list-inline g-font-weight-300"> 
+          <ul class="list-inline g-font-weight-300">
             <li class="list-inline-item g-mr-20">
               <i class="icon-location-pin g-pos-rel g-top-1 g-color-gray-dark-v5 g-mr-5"></i>{{user.profile.mun.mun_nombre}}, {{user.profile.mun.depto.depto_nombre}} 
             </li>
@@ -23,7 +22,7 @@
             <li class="list-inline-item g-mr-20">
               <i class="icon-credit-card g-pos-rel g-top-1 g-color-gray-dark-v5 g-mr-5"></i>Suscripción {% for g in request.user.groups.all %}{{g.name}}{% endfor %}
             </li>
-          </ul> 
+          </ul>
           <hr class="g-brd-gray-light-v4 g-my-20">
           <p class="lead g-line-height-1_8">About elementum tincidunt massa, a pulvinar leo ultricies ut. Ut fringilla lectus tellusimp imperdiet molestie est. Dell viverra cursus nibh volutpat at.</p>
           <hr class="g-brd-gray-light-v4 g-my-20">
