@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+  <section class="g-mb-100">
+    <div class="container">
+      <div class="row">
+        {% include 'perfil_menu.html' %}
+        <div class="col-lg-9">
+          <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
+            <h2 class="g-font-weight-300 g-mr-10">Editar Perfil</h2>
+          </div>
+          <form method="POST" class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" maxlength="30" value="{{request.user.first_name}}" class="form-control" required name="first_name">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Apellido</label>
+                            <input type="text" maxlength="150" value="{{request.user.last_name}}" class="form-control" required name="last_name">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Fecha de nacimiento</label>
+                            <input type="date"  value="{{request.user.profile.auth_birth_date|date:'Y-m-d'}}"  class="form-control" name="auth_birth_date">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <input type="submit" name="btn_submit" id="btnSubmit" class="btn btn-primary" value="Aceptar">
+                    </div>
+                </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+{% block javascript %}
+  <script>
+    $(document).ready(function(){
+      $('#idEditarPerfil').addClass('active');
+    });
+  </script>
+{% endblock javascript %}

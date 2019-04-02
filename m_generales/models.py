@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
- 
- 
+
 # Create your models here.
 class profile(models.Model):
     auth = models.OneToOneField(User, models.DO_NOTHING, db_column='auth', primary_key=True)
@@ -12,10 +11,10 @@ class profile(models.Model):
     auth_birth_date = models.DateField(null=True, blank=True)
     auth_change_pass = models.NullBooleanField(default=False)
     mun = models.ForeignKey('GralMunicipios', models.DO_NOTHING, blank=True, null=True)
-    class Meta: 
+    class Meta:
         managed = False
-        db_table = 'auth_profile' 
- 
+        db_table = 'auth_profile'
+
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:

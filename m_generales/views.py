@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
-from django.http import *  
+from django.http import *
 #from django.urls import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -9,13 +9,13 @@ from django.db import transaction
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, Group
 from m_generales.models import *
-import os 
+import os
 from django.conf import settings
-from django.db.models import Count, Sum 
+from django.db.models import Count, Sum
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.db import connection 
+from django.db import connection
 from django.contrib.humanize.templatetags.humanize import *
 from m_temas.models import *
 from m_generales.forms import SignUpForm
@@ -31,7 +31,7 @@ def dictfetchall(cursor):
 	return [
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
-	] 
+	]
 
 def inicio(request):
 	listado_metas = list(TmsTema.objects.values(
@@ -93,7 +93,7 @@ def suscribirse(request):
 	else:
 		form = SignUpForm()
 	return render(request, 'suscribirse.html', {'form': form})
-  
+
 def reset_password(request):
 	if request.POST:
 		try:
