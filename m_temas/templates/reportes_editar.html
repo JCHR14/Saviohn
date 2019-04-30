@@ -33,9 +33,8 @@
                     <div class="form-group g-mb-20">
                       <label class="g-mb-10 text-uppercase toBold">Estado</label>
                       <select name="reporte_estado" id="id_reporte_estado" class="form-control" required >
-                        <option  {% if reporte_estado %} selected {% endif %} value="1">Activo</option>
-                        <option {% if not reporte_estado %} selected {% endif %} value="0">Inactivo</option>
-                      </select>
+                        <option  {% if prt.reporte_estado %} selected {% endif %} value="1">Activo</option>
+                        <option {% if not rpt.reporte_estado %} selected {% endif %} value="0">Inactivo</option>
                     </div>
                   </div>
                   <div class="col-md-12">

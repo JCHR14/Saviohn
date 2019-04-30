@@ -21,25 +21,45 @@
                         <span class="form-text text-muted">Máximo de caracteres 50</span>
                       </div>
                   </div>
+                  
                   <div class="col-md-12">
-                      <div class="form-group g-mb-20">
-                        <label class="g-mb-10 text-uppercase toBold">Tema</label>
-                        <select name="tema" id="id_tema" required class="form-control">
-                          <option value="{{sub.tema.pk}}">{{sub.tema.tema_nombre}}</option>
-                          {% for x in listado %}
-                            <option value="{{x.tema_id}}">{{x.tema_nombre}}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Sub nombre</label>
+                      <input type="text" name="subtema_subnombre" id="subtema_subnombre" class="form-control form-control-md" 
+                      required maxlength="20" value="{{sub.subtema_subnombre}}">
+                      <span class="form-text text-muted">Máximo de caracteres 20</span>
+                    </div>
                   </div>
+  
                   <div class="col-md-12">
-                      <div class="form-group g-mb-20">
-                        <label class="g-mb-10 text-uppercase toBold">Estado</label>
-                        <select name="subtema_estado" id="id_subtema_estado" required class="form-control">
-                          <option value="1" {% if sub.subtema_estado %} selected="" {% endif %}>Activo</option>
-                          <option value="0" {% if not sub.subtema_estado %} selected="" {% endif %}>Inactivo</option>
-                        </select>
-                      </div>
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Descripción</label>
+                      <textarea name="subtema_descripcion" id="subtema_descripcion" class="form-control form-control-md" 
+                      rows="5" required style="resize:none;" maxlength="500">{{sub.subtema_descripcion}}</textarea>
+                      <span class="form-text text-muted">Máximo de caracteres 500</span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Tema</label>
+                      <select name="tema" id="id_tema" required class="form-control">
+                        <option value="{{sub.tema.pk}}">{{sub.tema.tema_nombre}}</option>
+                        {% for x in listado %}
+                          <option value="{{x.tema_id}}">{{x.tema_nombre}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Estado</label>
+                      <select name="subtema_estado" id="id_subtema_estado" required class="form-control">
+                        <option value="1" {% if sub.subtema_estado %} selected="" {% endif %}>Activo</option>
+                        <option value="0" {% if not sub.subtema_estado %} selected="" {% endif %}>Inactivo</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               <hr>

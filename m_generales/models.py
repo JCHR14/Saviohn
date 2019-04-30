@@ -10,7 +10,11 @@ class profile(models.Model):
     auth_email_confirmed = models.BooleanField(default=False)
     auth_birth_date = models.DateField(null=True, blank=True)
     auth_change_pass = models.NullBooleanField(default=False)
-    mun = models.ForeignKey('GralMunicipios', models.DO_NOTHING, blank=True, null=True)
+    auth_country = models.CharField(max_length=50, blank=True, null=True)
+    auth_city = models.CharField(max_length=50, blank=True, null=True)
+    auth_full_data_geo = models.CharField(max_length=5000, blank=True, null=True)
+    auth_ip = models.CharField(max_length=50, blank=True, null=True)
+    auth_routable = models.CharField(max_length=50, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'auth_profile'

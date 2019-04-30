@@ -35,13 +35,7 @@
               <h1 style="color:#000;">¿Cuál es el tema de tu interés?</h1>
             </div>
           </div><br><br>
-          <div class="row text-center">
-            {% for x in listado_metas %}
-              <div class="col-md-3 div_temas" data-url="{% url 'temas_detalle' x.tema_id %}">
-                <span class="circle"><h3>{{x.tema_nombre}}</h3></span>
-              </div>
-            {% endfor %}
-          </div>
+          {% include 'extras/reportes_circulos.html' %}
         </div>
       </section>
       <br>

@@ -145,6 +145,8 @@ def subtemas_nuevo(request):
 				subtema.subtema_nombre = request.POST['subtema_nombre']
 				subtema.subtema_estado = True
 				subtema.tema = TmsTema.objects.get(pk = request.POST['tema'])
+				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:20] 
+				subtema.subtema_descripcion = request.POST['subtema_descripcion'][:500]
 				subtema.user_creador = request.user
 				subtema.user_modificador = request.user
 				subtema.save()
@@ -173,6 +175,8 @@ def subtemas_editar(request, id):
 			try:
 				subtema = TmsSubtema.objects.get(pk = request.POST['id'])
 				subtema.subtema_nombre = request.POST['subtema_nombre']
+				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:20] 
+				subtema.subtema_descripcion = request.POST['subtema_descripcion'][:500]
 				subtema.subtema_estado = request.POST['subtema_estado']
 				subtema.tema = TmsTema.objects.get(pk = request.POST['tema'])
 				subtema.user_modificador = request.user

@@ -2,20 +2,14 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from django.http import *
-#from django.urls import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, Group
 from m_generales.models import *
 import os
-from django.conf import settings
 from django.db.models import Count, Sum
 from django.contrib import messages
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.db import connection
 from django.contrib.humanize.templatetags.humanize import *
 from m_temas.models import *
 from m_generales.forms import SignUpForm
@@ -25,6 +19,14 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from ipware import get_client_ip
+from django.contrib.gis.geoip2 import GeoIP2
+#from django.contrib.auth.hashers import check_password
+#from django.urls import reverse
+#from django.shortcuts import render_to_response
+from savio.settings import BASE_DIR
+#from django.template import RequestContext
+#from django.db import connection
 
 def dictfetchall(cursor):
 	columns = [col[0] for col in cursor.description]
@@ -32,8 +34,9 @@ def dictfetchall(cursor):
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
 	]
-
+ 
 def inicio(request):
+		
 	listado_metas = list(TmsTema.objects.values(
 			'tema_id',
 			'tema_nombre',
@@ -59,15 +62,31 @@ def suscribirse(request):
 		return HttpResponse(data, content_type='application/json')
 
 	if request.method == 'POST':
+
 		import random
 		import string
 		form = SignUpForm(request.POST) 
+		
 		if form.is_valid():
+			client_ip, is_routable = get_client_ip(request)
+			
+			if client_ip !='127.0.0.1' and client_ip != None:
+				dire = BASE_DIR+ '\m_generales\GeoLite2-City.mmdb'
+				g = GeoIP2(dire)
+				geodata = g.city(str(client_ip))
 			user = form.save()
 			user.refresh_from_db() # load the profile instance created by the signal
 			user.is_active = False
 			user.email = user.username
 			user.profile.auth_email_confirmed = False#GralMunicipios.objects.get(pk = request.POST['mun'])
+			try:
+				user.profile.auth_full_data_geo = geodata if geodata is not None else ''
+				user.profile.auth_city = geodata['city'] if geodata is not None else ''
+				user.profile.auth_country = geodata['country_name'] if geodata is not None else ''
+				user.profile.auth_ip = client_ip
+				user.profile.auth_routable = is_routable
+			except Exception as e:
+				print (e)
 			user.save()
  			
 			current_site = get_current_site(request)

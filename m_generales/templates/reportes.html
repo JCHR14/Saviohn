@@ -13,6 +13,7 @@
       transform: scale(1.05) ;
       transition: transform 0.5s ease-in-out;
     }
+    
   </style>
       <!-- Promo Block -->
   <hr class="g-brd-gray-light-v4 my-0">
@@ -25,13 +26,7 @@
           <h1 style="color:#000;">¿Cuál es el tema de tu interés?</h1>
         </div>
       </div><br><br>
-      <div class="row text-center">
-        {% for x in listado_metas %}
-          <div class="col-md-3 div_temas" data-url="{% url 'temas_detalle' x.tema_id %}">
-            <span class="circle"><h3>{{x.tema_nombre}}</h3></span>
-          </div>
-        {% endfor %}
-      </div>
+      {% include 'extras/reportes_circulos.html' %}
     </div>
   </section>
 {% endblock content %}

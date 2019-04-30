@@ -1,0 +1,11 @@
+{% load staticfiles %} 
+<div class="row text-center">
+    {% for x in listado_metas %}
+        <div class="col-md-3 topadd" data-url="{% url 'temas_detalle' x.tema_id %}">
+        <div class="div_temas circle">
+            <img class="img_width" src="{% static 'img/bill3.png' %}" alt="">
+        </div>
+        <h5>{{x.tema_nombre}}</h5>
+        </div>
+    {% endfor %}
+</div>

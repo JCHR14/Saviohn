@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
- 
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -130,16 +130,16 @@ USE_L10N = False
 
 USE_TZ = True
 
-USERNAME_MAIL = 'savio@bi-dss.com'#'unotrans@bi-dss.com'
-PASSWORD_MAIL = 'Bidss2018$'#'Bidss2018!'
-SERVER_SMTP = 'smtp.office365.com:587'
+USERNAME_MAIL = 'info@savio.hn'#'unotrans@bi-dss.com'
+PASSWORD_MAIL = 'hnsavios.19'#'Bidss2018!'
+SERVER_SMTP = 'smtp.gmail.com:587'
 
-EMAIL_HOST = 'smtp.office365.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'savio@bi-dss.com'
-EMAIL_HOST_PASSWORD = 'Bidss2018$'
+EMAIL_HOST_USER = 'info@savio.hn'
+EMAIL_HOST_PASSWORD = 'hnsavios.19'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Savio Team <savio@bi-dss.com>'
+DEFAULT_FROM_EMAIL = 'Savio Team <info@savio.hn>'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)

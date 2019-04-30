@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %} 
+{% load staticfiles %}
 {% block content %}
       <style type="text/css">
         #formLogin{
@@ -14,28 +14,43 @@
         <div class="container">
           <div class="row no-gutters">
             <div class="col-md-3">
-              
-            </div> 
+            </div>
             <div class="col-md-6">
               <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 bg_my_amarillo" id="formLogin" autocomplete="off" method="POST">
                 <h3 class="color_my_morado toBold">Login</h3>
                 <hr>
                 {% csrf_token %}
-                {% for field in form %}
-                  <div class="form-group g-mb-20">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    
-                    {% if field.help_text %}
-                      <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                     
-                    {% for error in field.errors %}
-                      <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                    </p>
-                  </div>
-                {% endfor %}
+                {% if form.non_field_errors %}
+                    {{ form.non_field_errors }}
+                    <hr>
+                  {% endif %}
+                  {% for field in form %}
+                      {% if forloop.first %}
+                          <div class="form-group g-mb-20">
+                              <label>Correo Electrónico</label>
+                              {{ field }}
+                              {% if field.help_text %}
+                              <p class="textHelp">{{ field.help_text }}</p>
+                              {% endif %}
+                              {% for error in field.errors %}
+                              <p style="color: red">{{ error }}</p>
+                              {% endfor %}
+                              </p>
+                          </div>
+                      {% else %}
+                        <div class="form-group g-mb-20">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                            <p class="textHelp">{{ field.help_text }}</p>
+                            {% endif %}
+                            {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                            </p>
+                        </div>
+                      {% endif %}
+                  {% endfor %}
                 <div class="row">
                   <div class="col-md-12"><a href="{% url 'password_reset' %}" class="login_link color_my_morado " id="">¿Olvidó su contraseña?</a></div>
                 </div>

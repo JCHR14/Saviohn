@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% load staticfiles %} 
+{% load staticfiles %}
 {% block content %}
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2-bootstrap4.css' %}">
   <section class="g-py-10">
     <div class="container">
       <div class="row no-gutters">
-        <div class="col-md-3"></div> 
+        <div class="col-md-3"></div>
         <div class="col-md-9">
           <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
-            <h2 class="g-font-weight-300 g-mr-10">Detalle usuario: {{user.username}}</h2>
+            <h2 class="g-font-weight-300 g-mr-10">Detalle usuario: {{us.username}}</h2>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -19,7 +19,9 @@
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Estado: </b> {{us.is_active}}</li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Ultima sesión: </b> {{us.last_login}} </li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Fecha de registro: </b> {{us.date_joined}}</li>
-                <li class="g-py-8"><a href="{% url 'usuarios_reset_pwd' us.id %}" class="btn btn-success btn-sm pull-right">Cambiar contraseña</a></li>
+                <li class="g-py-8 text-right">
+                  <a href="{% url 'usuarios_reset_pwd' us.id %}" class="btn btn-success btn-sm">Cambiar contraseña</a>
+                </li>
               </ul>
             </div>
           </div>
