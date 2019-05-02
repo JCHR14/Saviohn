@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}  
 {% block content %}
+
       <section class="g-py-10">
         <div class="container">
           <div class="row no-gutters">
@@ -10,7 +11,8 @@
               <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
                 <h2 class="g-font-weight-300 g-mr-10">Nuevo Reporte de {{sub.subtema_nombre}}</h2>
               </div>
-              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST" enctype='multipart/form-data'>
+              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" 
+              autocomplete="off" method="POST" >
                 {% csrf_token %}
                 <input type="hidden" name="subtema" value="{{sub.pk}}">
                 <div class="row">
@@ -24,7 +26,8 @@
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
                       <label class="g-mb-10 text-uppercase toBold">Descripción</label>
-                      <textarea name="reporte_descripcion" id="id_reporte_descripcion" required class="form-control form-control-md" style="resize:none;" rows="2"></textarea>
+                      <textarea name="reporte_descripcion" id="id_reporte_descripcion" required class="form-control form-control-md"
+                       style="resize:none;" rows="2" maxlength="500"></textarea>
                       <span class="form-text text-muted">Máximo de caracteres 100</span>
                     </div>
                   </div>
@@ -46,17 +49,48 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="id_reporte_is_principal" name="reporte_is_principal">
+                        <label class="form-check-label" for="defaultCheck1">
+                          Es reporte principal?
+                        </label>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="1" id="id_reporte_is_secundario" name="reporte_is_secundario">
+                      <label class="form-check-label" for="defaultCheck1">
+                        Es reporte secundario?
+                      </label>
+                    </div>
+                  </div>
+                  
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
-                      <label class="g-mb-10 text-uppercase toBold">Url</label>
-                      <input type="url" name="reporte_url" id="id_reporte_url" class="form-control form-control-md" required maxlength="5000">
-                      <span class="form-text text-muted">https://...</span>
+                      <label class="g-mb-10 text-uppercase toBold">Iframe</label>
+                      <textarea name="reporte_iframe" id="id_reporte_iframe" class="form-control form-control-md"
+                      rows="2" maxlength="5000" required style="resize:none;"></textarea>
+                      <span class="form-text text-muted">Etiqueta iframe</span>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
-                      <label class="g-mb-10 text-uppercase toBold">Icono</label>
-                      <input type="file" name="reporte_logo" id="id_reporte_logo" class="form-control form-control-md" required accept="image/*">
+                      <label class="g-mb-10 text-uppercase toBold">Referencias</label>
+                      <input type="text" name="reporte_referencias" id="id_reporte_referencias" class="form-control form-control-md" 
+                      required maxlength="5000" placeholder="https://www.google.com/; https://www.youtube.com/;">
+                      <span class="form-text text-muted">Separar cada referencia con ";"</span>
+                    </div>
+                  </div> 
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Tags</label>
+                      <input type="text" name="reporte_tags" id="id_reporte_tags" class="form-control form-control-md" 
+                      required maxlength="100" placeholder="#educacion #literatura">
+                      <span class="form-text text-muted">Se reconocera como tags a todo lo que comience con "#"</span>
                     </div>
                   </div>
                 </div>

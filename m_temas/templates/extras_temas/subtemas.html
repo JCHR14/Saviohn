@@ -1,32 +1,18 @@
 {% load staticfiles %} 
-{% for x in listado_subtemas  %} 
-	<div class="row rowMaster">
-		<div class="col-md-3 subtema_col" >
-			<div class="border_subtema" data-id="rpt_tipos-{{x.subtema_id}}">
-				<div class="row">
-					<div class="col-md-9">
-						<h4><strong class="h4 color_my_morado ">{{x.subtema_nombre}}</strong></h4>
-					</div>
-					<div class="col-md-3 text-right">
-						<span class="h4"><i class="fa fa-plus color_my_amarillo icono_mostrar hide" data-id="{{x.subtema_id}}"></i></span>
-					</div>
+<div class="row">
+	{% for x in listado_subtemas  %} 
+		<div class="col-md-4">
+			<a href="{% url 'subtemas_detalle' x.subtema_id %}" class="noDeco">
+				<div class="border_subtema">
+					<h4>{{x.subtema_nombre}}</h4>
+					<p class="pSubNombre">{{x.subtema_subnombre}}</p>
+					<p class="pDescripcion">{{x.subtema_descripcion|truncatewords:'10'}}</p>
+					<p class="masInfo">
+						<span>Tags: {{x.subtema_tags|default:''}}</span> 
+						<br>
+					</p>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="row whereLoadRpt">
-						</div>
-					</div>
-				</div>
-			</div>
+			</a>
 		</div>
-	</div>
-{% endfor %}
-
-
-	
-			
-	
-
-
-	
-
+	{% endfor %}
+</div>

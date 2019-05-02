@@ -18,14 +18,16 @@
                   <div class="col-md-12">
                       <div class="form-group g-mb-20">
                         <label class="g-mb-10 text-uppercase toBold">Nombre</label>
-                        <input type="text" name="reporte_nombre" id="id_reporte_nombre" class="form-control form-control-md" required maxlength="50" value="{{rpt.reporte_nombre}}">
+                        <input type="text" name="reporte_nombre" id="id_reporte_nombre" class="form-control form-control-md" 
+                        required maxlength="50" value="{{rpt.reporte_nombre}}">
                         <span class="form-text text-muted">Máximo de caracteres 50</span>
                       </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
                       <label class="g-mb-10 text-uppercase toBold">Descripción</label>
-                      <textarea name="reporte_descripcion" id="id_reporte_descripcion" required class="form-control form-control-md" style="resize:none;" rows="2">{{rpt.reporte_descripcion}}</textarea>
+                      <textarea name="reporte_descripcion" id="id_reporte_descripcion" required class="form-control form-control-md" 
+                      style="resize:none;" rows="2" maxlength="500">{{rpt.reporte_descripcion}}</textarea>
                       <span class="form-text text-muted">Máximo de caracteres 100</span>
                     </div>
                   </div>
@@ -35,6 +37,7 @@
                       <select name="reporte_estado" id="id_reporte_estado" class="form-control" required >
                         <option  {% if prt.reporte_estado %} selected {% endif %} value="1">Activo</option>
                         <option {% if not rpt.reporte_estado %} selected {% endif %} value="0">Inactivo</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -46,19 +49,51 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="id_reporte_is_principal" 
+                        name="reporte_is_principal" {% if rpt.reporte_is_principal %} checked {% endif %}>
+                        <label class="form-check-label" for="defaultCheck1">
+                          Es reporte principal?
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="1" id="id_reporte_is_secundario" 
+                      name="reporte_is_secundario" {% if rpt.reporte_is_secundario %} checked {% endif %}>
+                      <label class="form-check-label" for="defaultCheck1">
+                        Es reporte secundario?
+                      </label>
+                    </div>
+                  </div>
+                  
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
-                      <label class="g-mb-10 text-uppercase toBold">Url</label>
-                      <input type="url" name="reporte_url" id="id_reporte_url" class="form-control form-control-md" required maxlength="5000" value="{{rpt.reporte_url}}">
-                      <span class="form-text text-muted">https://...</span>
+                      <label class="g-mb-10 text-uppercase toBold">Iframe</label>
+                      <textarea name="reporte_iframe" id="id_reporte_iframe" class="form-control form-control-md"
+                      rows="2" maxlength="5000" required style="resize:none;">{{rpt.reporte_iframe}}</textarea>
+                      <span class="form-text text-muted">Etiqueta iframe</span>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group g-mb-20">
-                      <label class="g-mb-10 text-uppercase toBold">Icono</label>
-                      <input type="file" name="reporte_logo" id="id_reporte_logo" class="form-control form-control-md" accept="image/*">
-                      <span><a href="{{rpt.reporte_logo.url}}" target="_blank">{{rpt.reporte_logo}}</a></span>
-                      <span class="form-text text-muted">Si ingresa otro icono automaticamente se sustituira el ingresado anteriormente</span>
+                      <label class="g-mb-10 text-uppercase toBold">Referencias</label>
+                      <input type="text" name="reporte_referencias" id="id_reporte_referencias" class="form-control form-control-md" 
+                      required maxlength="5000" placeholder="https://www.google.com/; https://www.youtube.com/;" 
+                      value="{{rpt.reporte_referencias}}">
+                      <span class="form-text text-muted">Separar cada referencia con ";"</span>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10 text-uppercase toBold">Tags</label>
+                      <input type="text" name="reporte_tags" id="id_reporte_tags" class="form-control form-control-md" 
+                      required maxlength="100" placeholder="#educacion #literatura" value="{{rpt.reporte_tags}}">
+                      <span class="form-text text-muted">Se reconocera como tags a todo lo que comience con "#"</span>
                     </div>
                   </div>
                 </div>

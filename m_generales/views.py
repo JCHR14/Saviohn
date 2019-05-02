@@ -41,6 +41,7 @@ def inicio(request):
 			'tema_id',
 			'tema_nombre',
 			'tema_descripcion',
+			'tema_logo',
 			'tema_estado'
 		).filter(tema_estado = True))
 	ctx = {
@@ -180,11 +181,13 @@ def reportes(request):
 			'tema_id',
 			'tema_nombre',
 			'tema_descripcion',
+			'tema_logo',
 			'tema_estado'
 		).filter(tema_estado = True))
 	ctx = {
 		'listado_metas':listado_metas,
 	}
+	print (listado_metas)
 	return render(request, 'reportes.html', ctx)
 
 def handler404(request, *args, **argv):

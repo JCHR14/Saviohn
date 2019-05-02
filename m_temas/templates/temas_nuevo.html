@@ -11,7 +11,8 @@
               <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
                 <h2 class="g-font-weight-300 g-mr-10">Nuevo tema</h2>
               </div>
-              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST">
+              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" 
+              autocomplete="off" method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}
                 <div class="row">
                   <div class="col-md-12">
@@ -28,6 +29,14 @@
                         <span class="form-text text-muted">Máximo de caracteres 100</span>
                       </div>
                   </div>
+                  <div class="col-md-12">
+                      <div class="form-group g-mb-20">
+                        <label class="g-mb-10 text-uppercase toBold">Icono</label>
+                        <input type="file" name="tema_logo" id="id_tema_logo" class="form-control form-control-md" 
+                        required accept="image/*">
+                        <span class="form-text text-muted">Dimenciones recomendadas 128px por 128px</span>
+                      </div>
+                    </div>
                 </div>
               <hr>
               <div class="row">
@@ -35,8 +44,8 @@
                     <input type="submit" name="btn_submit" id="btnSubmit" class="btn btn-primary" value="Aceptar">
                   </div>
               </div>
-              </form>
-            </div>
+            </form>
+            </div> 
           </div>
         </div>
       </section>

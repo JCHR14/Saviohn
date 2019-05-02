@@ -13,6 +13,7 @@ urlpatterns = [
     path('subtemas-listado/', views.subtemas_listado, name='subtemas_listado'),
     path('subtemas-nuevo/', views.subtemas_nuevo, name='subtemas_nuevo'),
     path('subtemas-editar/<int:id>', views.subtemas_editar, name='subtemas_editar'),
+    path('subtemas-detalle/<int:id>', views.subtemas_detalle, name='subtemas_detalle'),
 
 	path('reportes-listado/<int:subtema>', views.reportes_listado, name='reportes_listado'),  
 	path('reportes-nuevo/<int:subtema>', views.reportes_nuevo, name='reportes_nuevo'),

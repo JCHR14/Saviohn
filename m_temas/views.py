@@ -11,6 +11,7 @@ from m_temas.models import *
 import os
 from django.conf import settings 
 from django.contrib import messages
+from django.db.models import Q
 
 def force_to_unicode(text):
 	return text if isinstance(text, unicode) else text.decode('latin-1')
@@ -48,9 +49,11 @@ def temas_nuevo(request):
 	if request.POST:
 		with transaction.atomic():
 			try:
+				print (request.FILES.get('tema_logo'))
 				tema = TmsTema()
 				tema.tema_nombre = request.POST['tema_nombre']
 				tema.tema_estado = True
+				tema.tema_logo = request.FILES.get('tema_logo')
 				tema.tema_descripcion = request.POST['tema_descripcion']
 				tema.user_creador = request.user
 				tema.user_modificador = request.user
@@ -76,6 +79,12 @@ def temas_editar(request, id):
 				tema.tema_estado = request.POST['tema_estado']
 				tema.tema_descripcion = request.POST['tema_descripcion']
 				tema.user_modificador = request.user
+				if not request.FILES.get('tema_logo') == None:
+					try:
+						tema.tema_logo = request.FILES.get('tema_logo')
+					except Exception as e:
+						print (e)
+						messages.warning(request, 'Ocurrio un problema al cambiar logo')
 				tema.save()
 				messages.success(request, 'Tema editado con éxito')
 			except Exception as e:
@@ -142,10 +151,10 @@ def subtemas_nuevo(request):
 		with transaction.atomic():
 			try:
 				subtema = TmsSubtema()
-				subtema.subtema_nombre = request.POST['subtema_nombre']
+				subtema.subtema_nombre = request.POST['subtema_nombre'][:50]
 				subtema.subtema_estado = True
 				subtema.tema = TmsTema.objects.get(pk = request.POST['tema'])
-				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:20] 
+				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:50] 
 				subtema.subtema_descripcion = request.POST['subtema_descripcion'][:500]
 				subtema.user_creador = request.user
 				subtema.user_modificador = request.user
@@ -174,8 +183,8 @@ def subtemas_editar(request, id):
 		with transaction.atomic():
 			try:
 				subtema = TmsSubtema.objects.get(pk = request.POST['id'])
-				subtema.subtema_nombre = request.POST['subtema_nombre']
-				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:20] 
+				subtema.subtema_nombre = request.POST['subtema_nombre'] [:50]
+				subtema.subtema_subnombre = request.POST['subtema_subnombre'][:50] 
 				subtema.subtema_descripcion = request.POST['subtema_descripcion'][:500]
 				subtema.subtema_estado = request.POST['subtema_estado']
 				subtema.tema = TmsTema.objects.get(pk = request.POST['tema'])
@@ -214,8 +223,27 @@ def subtemas_editar(request, id):
 			'sub':sub
 		}
 		return render(request, 'subtemas_editar.html', ctx)
-# FINAL DE MODULO DE SUBTEMAS
 
+@login_required()
+@transaction.atomic
+def subtemas_detalle(request, id):
+	try:
+		sub = TmsSubtema.objects.get(pk = id)
+	except Exception as e:
+		print (e)
+		messages.warning(request, 'No se pudo obtener sub tema')
+		return redirect('reportes')
+	listado_principal = list(TmsReporte.objects.filter(subtema= sub.pk, reporte_estado =  True).values(
+		'reporte_nombre', 'reporte_descripcion', 'reporte_tags', 'reporte_iframe', 'reporte_id',
+		'reporte_is_principal', 'reporte_is_secundario', 'reporte_referencias'
+	).order_by('-reporte_is_principal', '-reporte_is_secundario'))
+	ctx ={
+		'sub': sub,
+		'listado_principal': listado_principal
+	}
+	return render(request, 'subtemas_detalle.html', ctx)
+
+# FINAL DE MODULO DE SUBTEMAS
 
 # MODULOS DE REPORTES
 @login_required()
@@ -223,8 +251,7 @@ def reportes_listado(request, subtema):
 	if request.is_ajax():
 		import json
 		codigo = request.GET['codigo']
-		listado = TmsReporte.objects.values('reporte_id','reporte_nombre',
-			'reporte_descripcion', 'reporte_url').get(pk = codigo)
+		listado = TmsReporte.objects.values('reporte_iframe').get(pk = codigo)
 		data = json.dumps({
 			'listado':listado,
 		})
@@ -253,17 +280,59 @@ def reportes_nuevo(request, subtema):
 	if request.POST:
 		with transaction.atomic():
 			try:
+				try:
+					print (request.POST['reporte_is_principal'] )
+					if request.POST['reporte_is_principal'] == '1':
+						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
+							reporte_is_principal = 0
+						)
+				except Exception as e:
+					pass
+
+				try:
+					print (request.POST['reporte_is_secundario'] )
+					if request.POST['reporte_is_secundario'] == '1':
+						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
+							reporte_is_secundario = 0
+						)
+				except Exception as e:
+					pass
+
 				rpt = TmsReporte()
-				rpt.reporte_nombre = request.POST['reporte_nombre']
-				rpt.reporte_descripcion = request.POST['reporte_descripcion']
+				rpt.reporte_nombre = request.POST['reporte_nombre'][:50]
+				rpt.reporte_descripcion = request.POST['reporte_descripcion'][:500]
 				rpt.reporte_estado = request.POST['reporte_estado']
+
+				rpt.reporte_iframe = request.POST['reporte_iframe'][:5000]
+				rpt.reporte_referencias = request.POST['reporte_referencias'][:5000]
+				rpt.reporte_tags = request.POST['reporte_tags'][:100]
+				
 				rpt.reporte_gratuito = request.POST['reporte_gratuito']
-				rpt.reporte_logo = request.FILES.get('reporte_logo')
-				rpt.reporte_url = request.POST['reporte_url']
+				try:
+					rpt.reporte_is_principal = request.POST['reporte_is_principal']
+				except Exception as e:
+					pass 
+				
+				try:
+					rpt.reporte_is_secundario = request.POST['reporte_is_secundario']
+				except Exception as e:
+					pass
+				
 				rpt.subtema = TmsSubtema.objects.get(pk = request.POST['subtema'])
 				rpt.user_creador = request.user
 				rpt.user_modificador = request.user
 				rpt.save()
+				
+
+				data = list(TmsReporte.objects.filter(subtema= request.POST['subtema']).
+					values_list('reporte_tags', flat=True))
+				temp= ''
+				for x in data:
+					temp= temp + ' '+ x
+				TmsSubtema.objects.filter(pk = request.POST['subtema'] ).update(
+					subtema_tags = temp
+				)
+
 				messages.success(request, 'Reporte creado con éxito')
 			except Exception as e:
 				print (e)
@@ -297,20 +366,55 @@ def reportes_editar(request, id):
 	if request.POST:
 		with transaction.atomic():
 			try:
+				try:
+					print (request.POST['reporte_is_principal'] )
+					if request.POST['reporte_is_principal'] == '1':
+						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
+							reporte_is_principal = 0
+						)
+				except Exception as e:
+					pass
+
+				try:
+					print (request.POST['reporte_is_secundario'] )
+					if request.POST['reporte_is_secundario'] == '1':
+						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
+							reporte_is_secundario = 0
+						)
+				except Exception as e:
+					pass
+
 				rpt = TmsReporte.objects.get(pk = request.POST['id'])
-				rpt.reporte_nombre = request.POST['reporte_nombre']
-				rpt.reporte_descripcion = request.POST['reporte_descripcion']
+				rpt.reporte_nombre = request.POST['reporte_nombre'][:50]
+				rpt.reporte_descripcion = request.POST['reporte_descripcion'][:500]
 				rpt.reporte_estado = request.POST['reporte_estado']
+				rpt.reporte_iframe = request.POST['reporte_iframe'][:5000]
+				rpt.reporte_referencias = request.POST['reporte_referencias'][:5000]
+				rpt.reporte_tags = request.POST['reporte_tags'][:100]
 				rpt.reporte_gratuito = request.POST['reporte_gratuito']
-				if not request.FILES.get('reporte_logo') == None:
-					try:
-						rpt.reporte_logo = request.FILES.get('reporte_logo')
-					except Exception as e:
-						print (e)
-						messages.warning(request, 'Ocurrio un problema al cambiar imagen')		
-				rpt.reporte_url = request.POST['reporte_url']
+				try:
+					rpt.reporte_is_principal = request.POST['reporte_is_principal']
+				except Exception as e:
+					if rpt.reporte_is_principal == True:
+						rpt.reporte_is_principal = False
+				
+				try:
+					rpt.reporte_is_secundario = request.POST['reporte_is_secundario']
+				except Exception as e:
+					if rpt.reporte_is_secundario == True:
+						rpt.reporte_is_secundario = False
 				rpt.user_modificador = request.user
 				rpt.save()
+				
+				data = list(TmsReporte.objects.filter(subtema= request.POST['subtema']).
+					values_list('reporte_tags', flat=True))
+				temp= ''
+				for x in data:
+					temp= temp + ' '+ x
+				TmsSubtema.objects.filter(pk = request.POST['subtema'] ).update(
+					subtema_tags = temp
+				)
+
 				messages.success(request, 'Reporte editado con éxito')
 			except Exception as e:
 				print (e)

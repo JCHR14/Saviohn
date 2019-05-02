@@ -35,16 +35,16 @@
               <h1 style="color:#000;">¿Cuál es el tema de tu interés?</h1>
             </div>
           </div><br><br>
-          {% include 'extras/reportes_circulos.html' %}
+          {% include 'extras/reportes_circulos.html' with listadometas=listado_metas %}
         </div>
-      </section>
+      </section> 
       <br>
 {% endblock content %}
 
 {% block javascript %}
   <script type="text/javascript">
     $(document).on('ready', function(){
-        $(document).on('click', '.div_temas', function(){
+        $(document).on('click', '.topadd', function(){
           location.href= $(this).data('url');
         });
     });
