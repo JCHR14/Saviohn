@@ -1,21 +1,15 @@
 {% extends "base.html" %}
 {% load staticfiles %} 
 {% block content %}
-  <style type="text/css">
-    .div_temas{
-      margin-bottom: 8px ! important;
-      transition: transform 0.5s ease-in-out;
-    }
-    .div_temas:hover{
-      cursor: pointer; 
-      -webkit-transform: scale(1.05) ;
-      -ms-transform: scale(1.05) ;
-      transform: scale(1.05) ;
-      transition: transform 0.5s ease-in-out;
-    }
-    
-  </style>
-      <!-- Promo Block -->
+<style type="text/css">
+  .div_temas{
+    margin-bottom: 10px;
+  }
+
+  .div_temas:hover{
+    cursor: pointer;
+  }
+</style>
   <hr class="g-brd-gray-light-v4 my-0">
   <section class="g-py-50">
     <div class="container">
@@ -33,7 +27,7 @@
 {% block javascript %}
 <script>
   $(document).on('ready', function(){
-    $(document).on('click', '.topadd', function(){
+    $(document).on('click', '.circle', function(){
       location.href= $(this).data('url');
     });
   });

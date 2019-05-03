@@ -1,11 +1,11 @@
 {% load staticfiles %} 
 <div class="row text-center">
     {% for x in listadometas %}
-        <div class="col-md-3 topadd" data-url="{% url 'temas_detalle' x.tema_id %}">
-        <div class="div_temas circle">
+        <div class="col-md-3 topadd" >
+        <div class="div_temas circle " data-url="{% url 'temas_detalle' x.tema_id %}">
             <img class="img_width" src="/media/{{x.tema_logo}}" alt="">
         </div>
         <h5>{{x.tema_nombre}}</h5>
         </div>
     {% endfor %}
-</div>
+</div> 

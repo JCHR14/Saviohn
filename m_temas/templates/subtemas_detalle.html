@@ -26,15 +26,22 @@
                         <a class="nav-link secundario" id="mapa-tab" data-toggle="tab" href="#mapa" role="tab" 
                         aria-controls="mapa" aria-selected="false" data-donde = "idWhereIframeSecundario">Mapa</a>
                     </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
                         aria-haspopup="true" aria-expanded="false">Mas</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            
+                            {% for x in listado_principal %}
+                                
+                            {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
+                                <a class="dropdown-item" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
+                                aria-selected="false" data-donde = "idWhereIframeOtros">{{x.reporte_nombre}}</a>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </li>
+
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -84,6 +91,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="otros" role="tabpanel" aria-labelledby="mapa-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                <h5>{{sub.subtema_subnombre}}</h5>
+                            </div>
+                            <div class="col-md-12" id="idWhereIframeOtros">
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -106,7 +126,6 @@
         });
 
         function getIframe(codigo, $where){
-            console.log($where)
             $.ajax({
                 type: "GET",
                 data: {
@@ -114,7 +133,6 @@
                 },
                 url: "{% url 'reportes_listado' 0 %}",
                 success: function(data){
-                    console.log($where);
                     setIframe(data.listado, $where);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

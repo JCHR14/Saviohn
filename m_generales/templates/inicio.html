@@ -2,18 +2,13 @@
 {% load staticfiles %} 
 {% block content %} 
   <style type="text/css">
- .div_temas{
-    margin-bottom: 10px;
-    transition: transform 0.5s ease-in-out;
-  }
+    .div_temas{
+      margin-bottom: 10px;
+    }
 
-  .div_temas:hover{
-    cursor: pointer; 
-    -webkit-transform: scale(1.05) ;
-    -ms-transform: scale(1.05) ;
-    transform: scale(1.05) ;
-    transition: transform 0.5s ease-in-out;
-  }
+    .div_temas:hover{
+      cursor: pointer;
+    }
   </style>
       <section class="g-py-10">
         <div class="container">
@@ -44,7 +39,7 @@
 {% block javascript %}
   <script type="text/javascript">
     $(document).on('ready', function(){
-        $(document).on('click', '.topadd', function(){
+        $(document).on('click', '.circle', function(){
           location.href= $(this).data('url');
         });
     });

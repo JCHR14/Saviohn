@@ -367,7 +367,6 @@ def reportes_editar(request, id):
 		with transaction.atomic():
 			try:
 				try:
-					print (request.POST['reporte_is_principal'] )
 					if request.POST['reporte_is_principal'] == '1':
 						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
 							reporte_is_principal = 0
@@ -376,7 +375,6 @@ def reportes_editar(request, id):
 					pass
 
 				try:
-					print (request.POST['reporte_is_secundario'] )
 					if request.POST['reporte_is_secundario'] == '1':
 						TmsReporte.objects.filter(subtema= request.POST['subtema']).update(
 							reporte_is_secundario = 0
