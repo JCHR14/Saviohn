@@ -1,121 +1,129 @@
 {% extends "base.html" %}
 {% load staticfiles %} 
 {% block content %}
-  <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
-  <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
-  <section class="g-py-5">
-    <div class="container">
-        {% include 'extras/mensaje.html' %} 
-        <div class="row no-gutters">
-            <div class="col-md-12">
-                <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
+    <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
+    <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
+    <section class="g-py-5">
+        <div class="container">
+            
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
+                </div>
             </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-md-12">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" 
-                        aria-controls="home" aria-selected="true" >Visión General</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link principal" id="grafico-tab" data-toggle="tab" href="#grafico" role="tab" 
-                        aria-controls="grafico" aria-selected="false" data-donde = "idWhereIframePrincipal">Gráficos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link secundario" id="mapa-tab" data-toggle="tab" href="#mapa" role="tab" 
-                        aria-controls="mapa" aria-selected="false" data-donde = "idWhereIframeSecundario">Mapa</a>
-                    </li>
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" 
+                            aria-controls="home" aria-selected="true" >Visión General</a>
+                        </li>
+                        {% for x in listado_principal %}
+                            {% if x.reporte_is_principal %}
+                                <li class="nav-item">
+                                    <a class="nav-link principal" id="grafico-tab" data-toggle="tab" href="#grafico" role="tab" 
+                                    aria-controls="grafico" aria-selected="false" data-donde = "idWhereIframePrincipal" 
+                                    data-code="{{x.reporte_id}}">{{x.reporte_nombre}}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
-                        aria-haspopup="true" aria-expanded="false">Mas</a>
-                        <div class="dropdown-menu">
-                            
-                            {% for x in listado_principal %}
-                                
-                            {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
-                                <a class="dropdown-item" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
-                                aria-selected="false" data-donde = "idWhereIframeOtros">{{x.reporte_nombre}}</a>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </li>
+                        {% for x in listado_principal %}
+                            {% if x.reporte_is_secundario %}
+                                <li class="nav-item">
+                                    <a class="nav-link secundario" id="mapa-tab" data-toggle="tab" href="#mapa" role="tab" 
+                                    aria-controls="mapa" aria-selected="false" data-donde = "idWhereIframeSecundario"
+                                    data-code="{{x.reporte_id}}">{{x.reporte_nombre}}</a>
+                                </li>
+                            {% endif %} 
+                        {% endfor %}
 
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <br>
-                                <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
-                                <h5>{{sub.subtema_subnombre}}</h5>
-                                <hr>
-                                <p>{{sub.subtema_descripcion}}</p>
-                                <br>
-                                <p>Tags: <a href="#!">{{sub.subtema_tags}}</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
-                        <div class="row">
-                            <div class="col-md-12">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+                            aria-haspopup="true" aria-expanded="false">Mas</a>
+                            <div class="dropdown-menu">
                                 {% for x in listado_principal %}
-                                    {% if x.reporte_is_principal %}
-                                        <input type="hidden" name="pkPrim" id="idPkPrim" value="{{x.reporte_id}}">
-                                        <br>
-                                        <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
-                                        <h5>{{sub.subtema_subnombre}}</h5>
+                                    {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
+                                        <a class="dropdown-item otros" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
+                                        aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}"
+                                        >{{x.reporte_nombre}}</a>
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <div class="col-md-12" id="idWhereIframePrincipal">
-
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br>
+                                    <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                    <h5>{{sub.subtema_subnombre}}</h5>
+                                    <hr>
+                                    <p>{{sub.subtema_descripcion}}</p>
+                                    <br>
+                                    <p>Tags: <a href="#!">{{sub.subtema_tags}}</a></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                {% for x in listado_principal %}
-                                    {% if x.reporte_is_secundario %}
-                                        <input type="hidden" name="pkSecun" id="idPkSecun" value="{{x.reporte_id}}">
-                                        <br>
-                                        <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
-                                        <h5>{{sub.subtema_subnombre}}</h5>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-12" id="idWhereIframeSecundario">
+                        <div class="tab-pane fade" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% for x in listado_principal %}
+                                        {% if x.reporte_is_principal %}
+                                            <input type="hidden" name="pkPrim" id="idPkPrim" value="">
+                                            <br>
+                                            <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                            <h5>{{sub.subtema_subnombre}}</h5>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-12" id="idWhereIframePrincipal">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="otros" role="tabpanel" aria-labelledby="mapa-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <br>
-                                <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
-                                <h5>{{sub.subtema_subnombre}}</h5>
-                            </div>
-                            <div class="col-md-12" id="idWhereIframeOtros">
+                        <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% for x in listado_principal %}
+                                        {% if x.reporte_is_secundario %}
+                                            <input type="hidden" name="pkSecun" id="idPkSecun" value="{{x.reporte_id}}">
+                                            <br>
+                                            <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                            <h5>{{sub.subtema_subnombre}}</h5>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-12" id="idWhereIframeSecundario">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="tab-pane fade" id="otros" role="tabpanel" aria-labelledby="mapa-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br>
+                                    <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                    <h5>{{sub.subtema_subnombre}}</h5>
+                                </div>
+                                <div class="col-md-12" id="idWhereIframeOtros">
 
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-  </section>
+    </section>
 {% endblock content %}
 {% block javascript %}
   <script>
       $(document).ready(function(){
-        $(document).on('click', '.principal', function(){
-            var idSub = $("#idPkPrim").val();
+        $(document).on('click', '.principal, .secundario, .otros', function(){
+            var idSub = $(this).data("code");
             $where = $(this).data("donde");
             getIframe(idSub, $where);
         });
