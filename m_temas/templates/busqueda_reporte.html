@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %} 
+{% block content %}
+  <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
+  <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
+  <section class="g-py-5">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-md-12">
+                <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
+                <h1  style="color:#000;">Estos son los resultados de tu busqueda: <span class="color_my_morado">{{data}}</span></h1>
+            </div>
+        </div>
+        <hr>
+        {% include 'extras_temas/subtemas.html' %}
+    </div>
+  </section>
+{% endblock content %}
+{% block javascript %}
+<script>
+  
+</script>
+{% endblock javascript %}

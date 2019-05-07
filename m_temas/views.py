@@ -134,6 +134,18 @@ def temas_detalle(request, id):
 	return render(request, 'temas_detalle.html', ctx)
 # FINAL DE MODULO DE TEMAS 
 
+@login_required()
+def busqueda_reporte(request):
+	if request.GET:
+		data = request.GET['data']
+		
+		listado_subtemas =list(TmsSubtema.objects.values().filter(subtema_tags__contains= data, subtema_estado = True))
+		print (listado_subtemas)
+		ctx ={
+			'listado_subtemas':listado_subtemas,
+			'data':data
+		}
+		return render(request, 'busqueda_reporte.html', ctx)
 
 # MODULO DE SUBTEMAS
 @login_required()
@@ -229,21 +241,46 @@ def subtemas_editar(request, id):
 def subtemas_detalle(request, id):
 	try:
 		sub = TmsSubtema.objects.get(pk = id)
+		tags = sub.subtema_tags
+		tags = tags.split('#')
 	except Exception as e:
-		print (e)
 		messages.warning(request, 'No se pudo obtener sub tema')
 		return redirect('reportes')
+	mas = False
 	listado_principal = list(TmsReporte.objects.filter(subtema= sub.pk, reporte_estado =  True).values(
 		'reporte_nombre', 'reporte_descripcion', 'reporte_tags', 'reporte_iframe', 'reporte_id',
 		'reporte_is_principal', 'reporte_is_secundario', 'reporte_referencias'
 	).order_by('-reporte_is_principal', '-reporte_is_secundario'))
+	listado_referencias= ""
+	for x in listado_principal:
+		i = x["reporte_referencias"]
+		ultimo = i[-1]
+		if ultimo == ';':
+			listado_referencias = listado_referencias + i
+		else:
+			i = i + ';'
+			listado_referencias = listado_referencias + i
+		if x['reporte_is_principal'] != True and x['reporte_is_secundario'] != True:
+			mas= True
+	listado_referencias = listado_referencias.split(";")
+	listaIdRelacionados = list()
+	listado_relacionados = list()
+	for i in tags:
+		temp = list(TmsSubtema.objects.exclude(pk= sub.subtema_id).filter(
+			subtema_tags__contains= i, subtema_estado = True).values_list('subtema_id', flat= True))
+		for z in temp:
+			if z not in listaIdRelacionados:
+				listaIdRelacionados.append(z)
+	listado_relacionados = list(TmsSubtema.objects.filter(subtema_id__in = listaIdRelacionados))
 	ctx ={
+		'mas':mas,
 		'sub': sub,
-		'listado_principal': listado_principal
+		'tags':tags,
+		'listado_principal': listado_principal,
+		'listado_relacionados':listado_relacionados,
+		'listado_referencias':listado_referencias
 	}
 	return render(request, 'subtemas_detalle.html', ctx)
-
-# FINAL DE MODULO DE SUBTEMAS
 
 # MODULOS DE REPORTES
 @login_required()

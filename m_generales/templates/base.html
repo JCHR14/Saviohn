@@ -44,7 +44,6 @@
     <link rel="stylesheet" href="{% static 'vendor/typedjs/typed.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/hs-megamenu/src/hs.megamenu.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/hamburgers/hamburgers.min.css' %}">
-
     <!-- CSS Unify -->
     <link rel="stylesheet" href="{% static '/css/unify.css' %}">
 
@@ -56,7 +55,47 @@
     <main>
       <!-- Header -->
       <header id="js-header" class="u-header u-header--static">
-        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-10">
+        <!-- Top Bar -->
+        <div class="u-header__section u-header__section--dark g-bg-white g-transition-0_3 g-py-5">
+          <div class="container">
+              <div class="col-auto pull-right">
+                <!-- Search -->
+                <div class="d-inline-block g-valign-middle g-pos-rel g-top-minus-1">
+                  <a href="#" class="g-font-size-18 g-color-black"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="searchform-1"
+                    data-dropdown-target="#searchform-1"
+                    data-dropdown-type="css-animation"
+                    data-dropdown-duration="300"
+                    data-dropdown-animation-in="fadeInUp"
+                    data-dropdown-animation-out="fadeOutDown"
+                  >
+                    <i class="fa fa-search"></i>
+                  </a>
+
+                  <!-- Search Form -->
+                  <form id="searchform-1" class="u-searchform-v1 u-dropdown--css-animation 
+                  u-dropdown--hidden g-brd-black g-pa-10 g-mt-10 g-box-shadow-none" action="{% url 'busqueda_reporte' %}">
+                    <div class="input-group">
+                      <input class="form-control rounded-0 u-form-control border-0 g-py-10" type="search"
+                       placeholder="Ingrese el reporte que busca aquí..." name="data">
+
+                      <div class="input-group-addon p-0">
+                        <button class="btn rounded-0 btn-default btn-md g-font-size-14 g-px-18" type="submit">Buscar</button>
+                      </div>
+                    </div>
+                  </form>
+                  <!-- End Search Form -->
+                </div>
+                <!-- End Search -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Top Bar -->
+
+        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-5">
           <nav class="js-mega-menu navbar navbar-toggleable-md">
             <div class="container">
               <!-- Responsive Toggle Button -->
@@ -298,6 +337,8 @@
     <script src="{% static 'js/components/hs.carousel.js' %} "></script>
     <script src="{% static 'js/components/hs.header.js' %} "></script>
     <script src="{% static 'js/helpers/hs.hamburgers.js' %} "></script>
+    <script src="{% static '/js/components/hs.dropdown.js' %} "></script>
+    
     <script src="{% static 'js/components/hs.tabs.js' %} "></script>
     <script src="{% static 'js/components/hs.popup.js' %} "></script>
     <script src="{% static 'js/components/text-animation/hs.text-slideshow.js' %} "></script>
@@ -343,11 +384,18 @@
         });
       });
 
+      // initialization of HSDropdown component
+      $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {
+        afterOpen: function () {
+          $(this).find('input[type="search"]').focus();
+        }
+      });
       $(window).on('resize', function () {
         setTimeout(function () {
           $.HSCore.components.HSTabs.init('[role="tablist"]');
         }, 200);
       });
+
     </script>
 
     <script>

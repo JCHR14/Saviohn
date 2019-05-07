@@ -4,7 +4,7 @@
 		<div class="col-md-4">
 			<a href="{% url 'subtemas_detalle' x.subtema_id %}" class="noDeco">
 				<div class="border_subtema">
-					<h4>{{x.subtema_nombre}}</h4>
+					<h4><b>{{x.subtema_nombre}}</b></h4>
 					<p class="pSubNombre">{{x.subtema_subnombre}}</p>
 					<p class="pDescripcion">{{x.subtema_descripcion|truncatewords:'10'}}</p>
 					<p class="masInfo">

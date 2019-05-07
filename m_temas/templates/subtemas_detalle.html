@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
     <section class="g-py-5">
         <div class="container">
-            
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
@@ -37,32 +36,51 @@
                                 </li>
                             {% endif %} 
                         {% endfor %}
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
-                            aria-haspopup="true" aria-expanded="false">Mas</a>
-                            <div class="dropdown-menu">
-                                {% for x in listado_principal %}
-                                    {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
-                                        <a class="dropdown-item otros" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
-                                        aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}"
-                                        >{{x.reporte_nombre}}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </li>
+                        
+                        
+                        {% if mas %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+                                aria-haspopup="true" aria-expanded="false">Mas</a>
+                                <div class="dropdown-menu">
+                                    {% for x in listado_principal %}
+                                        {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
+                                            <a class="dropdown-item otros" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
+                                            aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}"
+                                            >{{x.reporte_nombre}}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        {% endif %}
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row">
                                 <div class="col-md-12">
                                     <br>
-                                    <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                    <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}}</h4>
                                     <h5>{{sub.subtema_subnombre}}</h5>
                                     <hr>
                                     <p>{{sub.subtema_descripcion}}</p>
                                     <br>
-                                    <p>Tags: <a href="#!">{{sub.subtema_tags}}</a></p>
+                                    <p>Tags: <br>
+                                        {% for x in tags %}                                           
+                                            {% if x != ' ' %}
+                                            <a href="#!">#{{x}}</a> 
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <br>
+                                    <p>
+                                        Fuentes: <br>
+                                        {% for x in listado_referencias %}
+                                            {% if x != '' %}
+                                            <a href="#!">{{x}}</a> <i class="fa fa-copy iconPointer" data-url="{{x}}"></i>
+                                            <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -73,8 +91,9 @@
                                         {% if x.reporte_is_principal %}
                                             <input type="hidden" name="pkPrim" id="idPkPrim" value="">
                                             <br>
-                                            <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                            <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}</h4>
                                             <h5>{{sub.subtema_subnombre}}</h5>
+                                            <br>
                                         {% endif %}
                                     {% endfor %}
                                 </div>
@@ -90,8 +109,9 @@
                                         {% if x.reporte_is_secundario %}
                                             <input type="hidden" name="pkSecun" id="idPkSecun" value="{{x.reporte_id}}">
                                             <br>
-                                            <h4>{{x.reporte_nombre}} / {{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                            <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}</h4>
                                             <h5>{{sub.subtema_subnombre}}</h5>
+                                            <br>
                                         {% endif %}
                                     {% endfor %}
                                 </div>
@@ -104,15 +124,36 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <br>
-                                    <h4>{{sub.subtema_nombre}}, {{sub.tema.tema_nombre}}</h4>
+                                    <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}}</h4>
                                     <h5>{{sub.subtema_subnombre}}</h5>
+                                    <br>
                                 </div>
-                                <div class="col-md-12" id="idWhereIframeOtros">
-
-                                </div>
+                                <div class="col-md-12" id="idWhereIframeOtros"></div>
                             </div>
                         </div>
-
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br><br>
+                    <h3 class="titleRelacionados">Reportes relacionados</h3>
+                    <div class="row">
+                        {% for x in listado_relacionados  %} 
+                            <div class="col-md-4">
+                                <a href="{% url 'subtemas_detalle' x.subtema_id %}" class="noDeco">
+                                    <div class="border_subtema">
+                                        <h4><b>{{x.subtema_nombre}}</b></h4>
+                                        <p class="pSubNombre">{{x.subtema_subnombre}}</p>
+                                        <p class="pDescripcion">{{x.subtema_descripcion|truncatewords:'10'}}</p>
+                                        <p class="masInfo">
+                                            <span>Tags: {{x.subtema_tags|default:''}}</span> 
+                                            <br>
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -124,11 +165,6 @@
       $(document).ready(function(){
         $(document).on('click', '.principal, .secundario, .otros', function(){
             var idSub = $(this).data("code");
-            $where = $(this).data("donde");
-            getIframe(idSub, $where);
-        });
-        $(document).on('click', '.secundario', function(){
-            var idSub = $("#idPkSecun").val();
             $where = $(this).data("donde");
             getIframe(idSub, $where);
         });
@@ -150,12 +186,40 @@
             });
         }
         function setIframe(data, $where){
-            $('#'+$where).empty();
-            $('#'+$where).append([
-                '<div class="embed-responsive embed-responsive-16by9">',
-                '' +data.reporte_iframe+ '',
-                '</div>'
-            ].join(''));
+            var toiframe = data.reporte_iframe
+            var res = toiframe.substring(0,7);
+
+            if(res == "<iframe"){
+                $('#'+$where).empty();
+                $('#'+$where).append([
+                    '<div class="embed-responsive embed-responsive-16by9">',
+                    '' +data.reporte_iframe+ '',
+                    '</div>'
+                ].join(''));
+            }else{
+                $('#'+$where).empty();
+                $('#'+$where).append([
+                    '<div class="embed-responsive embed-responsive-16by9">',
+                    '<iframe class="embed-responsive-item" src="' +data.reporte_iframe+ '" allowfullscreen></iframe>',
+                    '</div>'
+                ].join(''));
+            }
+        }
+      });
+  </script>
+  <script>
+      $(document).ready(function(){
+        $(document).on("click", ".iconPointer", function(){
+            var data = $(this).data("url");
+            copyToClipboard(data);
+        });
+
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(element).select();
+            document.execCommand("copy");
+            $temp.remove();
         }
       });
   </script>

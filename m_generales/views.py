@@ -63,31 +63,15 @@ def suscribirse(request):
 		return HttpResponse(data, content_type='application/json')
 
 	if request.method == 'POST':
-
 		import random
 		import string
-		form = SignUpForm(request.POST) 
-		
+		form = SignUpForm(request.POST)
 		if form.is_valid():
-			client_ip, is_routable = get_client_ip(request)
-			
-			if client_ip !='127.0.0.1' and client_ip != None:
-				dire = BASE_DIR+ '\m_generales\GeoLite2-City.mmdb'
-				g = GeoIP2(dire)
-				geodata = g.city(str(client_ip))
 			user = form.save()
 			user.refresh_from_db() # load the profile instance created by the signal
 			user.is_active = False
 			user.email = user.username
 			user.profile.auth_email_confirmed = False#GralMunicipios.objects.get(pk = request.POST['mun'])
-			try:
-				user.profile.auth_full_data_geo = geodata if geodata is not None else ''
-				user.profile.auth_city = geodata['city'] if geodata is not None else ''
-				user.profile.auth_country = geodata['country_name'] if geodata is not None else ''
-				user.profile.auth_ip = client_ip
-				user.profile.auth_routable = is_routable
-			except Exception as e:
-				print (e)
 			user.save()
  			
 			current_site = get_current_site(request)
@@ -187,8 +171,50 @@ def reportes(request):
 	ctx = {
 		'listado_metas':listado_metas,
 	}
-	print (listado_metas)
 	return render(request, 'reportes.html', ctx)
+
+import logging
+import datetime
+
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+
+# for logging - define "error" named logging handler and logger in settings.py
+error_log=logging.getLogger('error')
+
+
+@receiver(user_logged_in)
+def log_user_logged_in(sender, user, request, **kwargs):
+	try:
+		print(request)
+		print(user)
+		'''
+		login_logout_logs = LoginLogoutLog.objects.filter(session_key=request.session.session_key, user=user.id)[:1]
+		if not login_logout_logs:
+			login_logout_log = LoginLogoutLog(login_time=datetime.datetime.now(),session_key=request.session.session_key, user=user, host=request.META['HTTP_HOST'])
+			login_logout_log.save()
+		'''
+	except Exception as e:
+        # log the error
+		error_log.error("log_user_logged_in request: %s, error: %s" % (request, e))
+
+@receiver(user_logged_out)
+def log_user_logged_out(sender, user, request, **kwargs):
+	try:
+		print('########')
+		print(user)
+		'''
+		login_logout_logs = LoginLogoutLog.objects.filter(session_key=request.session.session_key, user=user.id, host=request.META['HTTP_HOST'])
+		login_logout_logs.filter(logout_time__isnull=True).update(logout_time=datetime.datetime.now())
+		if not login_logout_logs:
+			login_logout_log = LoginLogoutLog(logout_time=datetime.datetime.now(), session_key=request.session.session_key, user=user, host=request.META['HTTP_HOST'])
+			login_logout_log.save()
+		'''
+	except Exception as e:
+		#log the error
+		error_log.error("log_user_logged_out request: %s, error: %s" % (request, e))
+
+
 
 def handler404(request, *args, **argv):
 	return render(request, 'paginasErrores/404.html', {})
