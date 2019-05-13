@@ -127,8 +127,8 @@ TIME_ZONE = 'America/Tegucigalpa'
 USE_I18N = True
 
 USE_L10N = False
-
-USE_TZ = True
+ 
+USE_TZ = False
 
 USERNAME_MAIL = 'info@savio.hn'#'unotrans@bi-dss.com'
 PASSWORD_MAIL = 'hnsavios.19'#'Bidss2018!'

@@ -8,10 +8,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 from django.contrib.auth.models import User, Group
 from m_temas.models import *
+from m_generales.models import Bitacora
 import os
 from django.conf import settings 
 from django.contrib import messages
 from django.db.models import Q
+import datetime as dt
 
 def force_to_unicode(text):
 	return text if isinstance(text, unicode) else text.decode('latin-1')
@@ -239,48 +241,60 @@ def subtemas_editar(request, id):
 @login_required()
 @transaction.atomic
 def subtemas_detalle(request, id):
-	try:
-		sub = TmsSubtema.objects.get(pk = id)
-		tags = sub.subtema_tags
-		tags = tags.split('#')
-	except Exception as e:
-		messages.warning(request, 'No se pudo obtener sub tema')
-		return redirect('reportes')
-	mas = False
-	listado_principal = list(TmsReporte.objects.filter(subtema= sub.pk, reporte_estado =  True).values(
-		'reporte_nombre', 'reporte_descripcion', 'reporte_tags', 'reporte_iframe', 'reporte_id',
-		'reporte_is_principal', 'reporte_is_secundario', 'reporte_referencias'
-	).order_by('-reporte_is_principal', '-reporte_is_secundario'))
-	listado_referencias= ""
-	for x in listado_principal:
-		i = x["reporte_referencias"]
-		ultimo = i[-1]
-		if ultimo == ';':
-			listado_referencias = listado_referencias + i
-		else:
-			i = i + ';'
-			listado_referencias = listado_referencias + i
-		if x['reporte_is_principal'] != True and x['reporte_is_secundario'] != True:
-			mas= True
-	listado_referencias = listado_referencias.split(";")
-	listaIdRelacionados = list()
-	listado_relacionados = list()
-	for i in tags:
-		temp = list(TmsSubtema.objects.exclude(pk= sub.subtema_id).filter(
-			subtema_tags__contains= i, subtema_estado = True).values_list('subtema_id', flat= True))
-		for z in temp:
-			if z not in listaIdRelacionados:
-				listaIdRelacionados.append(z)
-	listado_relacionados = list(TmsSubtema.objects.filter(subtema_id__in = listaIdRelacionados))
-	ctx ={
-		'mas':mas,
-		'sub': sub,
-		'tags':tags,
-		'listado_principal': listado_principal,
-		'listado_relacionados':listado_relacionados,
-		'listado_referencias':listado_referencias
-	}
-	return render(request, 'subtemas_detalle.html', ctx)
+	if request.is_ajax():
+		import json
+		
+		data = json.dumps({
+			})
+		return HttpResponse(data, content_type='application/json')
+	else:
+		try:
+			sub = TmsSubtema.objects.get(pk = id)
+			tags = sub.subtema_tags
+			tags = tags.split('#')
+		except Exception as e:
+			messages.warning(request, 'No se pudo obtener sub tema')
+			return redirect('reportes')
+		
+		mas = False
+		listado_principal = list(TmsReporte.objects.filter(subtema= sub.pk, reporte_estado =  True).values(
+			'reporte_nombre', 'reporte_descripcion', 'reporte_tags', 'reporte_iframe', 'reporte_id',
+			'reporte_is_principal', 'reporte_is_secundario', 'reporte_referencias'
+		).order_by('-reporte_is_principal', '-reporte_is_secundario'))
+		listado_referencias= ""
+		for x in listado_principal:
+			i = x["reporte_referencias"]
+			ultimo = i[-1]
+			if ultimo == ';':
+				listado_referencias = listado_referencias + i
+			else:
+				i = i + ';'
+				listado_referencias = listado_referencias + i
+			if x['reporte_is_principal'] != True and x['reporte_is_secundario'] != True:
+				mas= True
+		listado_referencias = listado_referencias.split(";")
+		listaIdRelacionados = list()
+		listado_relacionados = list()
+		for i in tags:
+			i = i.replace(" ", "")
+			if i:
+				a = i.replace("#", "")
+				temp = list()
+				temp = list(TmsSubtema.objects.exclude(pk= sub.subtema_id).filter(
+					subtema_tags__contains= a, subtema_estado = True).values_list('subtema_id', flat= True))
+				for z in temp:
+					if z not in listaIdRelacionados:
+						listaIdRelacionados.append(z)
+		listado_relacionados = list(TmsSubtema.objects.filter(subtema_id__in = listaIdRelacionados))
+		ctx ={
+			'mas':mas,
+			'sub': sub,
+			'tags':tags,
+			'listado_principal': listado_principal,
+			'listado_relacionados':listado_relacionados,
+			'listado_referencias':listado_referencias
+		}
+		return render(request, 'subtemas_detalle.html', ctx)
 
 # MODULOS DE REPORTES
 @login_required()
@@ -288,6 +302,22 @@ def reportes_listado(request, subtema):
 	if request.is_ajax():
 		import json
 		codigo = request.GET['codigo']
+		try:
+			if not Bitacora.objects.filter(reporte = codigo, user = request.user.id).exists():
+				Bitacora.objects.create(
+					user = request.user,
+					reporte = TmsReporte.objects.get(pk = codigo),
+					bit_last_date = dt.datetime.today(),
+					bit_counter = 1
+				)
+			else:
+				bita = Bitacora.objects.get(reporte = codigo, user = request.user.id)
+				bita.bit_last_date = dt.datetime.today()
+				bita.bit_counter = bita.bit_counter + 1
+				bita.save()
+		except Exception as e:
+			print(e)
+			
 		listado = TmsReporte.objects.values('reporte_iframe').get(pk = codigo)
 		data = json.dumps({
 			'listado':listado,

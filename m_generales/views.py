@@ -19,14 +19,10 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from ipware import get_client_ip
-from django.contrib.gis.geoip2 import GeoIP2
-#from django.contrib.auth.hashers import check_password
-#from django.urls import reverse
-#from django.shortcuts import render_to_response
-from savio.settings import BASE_DIR
-#from django.template import RequestContext
-#from django.db import connection
+import logging
+import datetime as dt
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
 
 def dictfetchall(cursor):
 	columns = [col[0] for col in cursor.description]
@@ -36,7 +32,6 @@ def dictfetchall(cursor):
 	]
  
 def inicio(request):
-		
 	listado_metas = list(TmsTema.objects.values(
 			'tema_id',
 			'tema_nombre',
@@ -173,48 +168,41 @@ def reportes(request):
 	}
 	return render(request, 'reportes.html', ctx)
 
-import logging
-import datetime
-
-from django.contrib.auth.signals import user_logged_in, user_logged_out
-from django.dispatch import receiver
-
 # for logging - define "error" named logging handler and logger in settings.py
 error_log=logging.getLogger('error')
-
 
 @receiver(user_logged_in)
 def log_user_logged_in(sender, user, request, **kwargs):
 	try:
-		print(request)
-		print(user)
-		'''
-		login_logout_logs = LoginLogoutLog.objects.filter(session_key=request.session.session_key, user=user.id)[:1]
-		if not login_logout_logs:
-			login_logout_log = LoginLogoutLog(login_time=datetime.datetime.now(),session_key=request.session.session_key, user=user, host=request.META['HTTP_HOST'])
-			login_logout_log.save()
-		'''
+		AuthBitacoraSession.objects.create(
+			user = user,
+			bit_login_time = dt.datetime.now(),
+			bit_activo =  True,
+			bit_host = request.META['HTTP_HOST']
+		)
 	except Exception as e:
-        # log the error
 		error_log.error("log_user_logged_in request: %s, error: %s" % (request, e))
 
 @receiver(user_logged_out)
 def log_user_logged_out(sender, user, request, **kwargs):
 	try:
-		print('########')
-		print(user)
-		'''
-		login_logout_logs = LoginLogoutLog.objects.filter(session_key=request.session.session_key, user=user.id, host=request.META['HTTP_HOST'])
-		login_logout_logs.filter(logout_time__isnull=True).update(logout_time=datetime.datetime.now())
-		if not login_logout_logs:
-			login_logout_log = LoginLogoutLog(logout_time=datetime.datetime.now(), session_key=request.session.session_key, user=user, host=request.META['HTTP_HOST'])
-			login_logout_log.save()
-		'''
+		bita = AuthBitacoraSession.objects.filter(user = user.pk, bit_activo = True).last()
+		bita.bit_logout_time = dt.datetime.now()
+		bita.bit_activo =  False
+		bita.save()
+		resultado = dt.datetime.now() -  bita.bit_login_time
+		minutos = float(resultado.total_seconds() / 60)
+		pro = profile.objects.get(pk = user.pk)
+		acum = pro.auth_time_session
+		if acum is not None:
+			total = float(acum) + minutos
+		else:
+			total = minutos
+		total = "{0:.2f}".format(total)
+		pro.auth_time_session = total
+		pro.save()
 	except Exception as e:
-		#log the error
 		error_log.error("log_user_logged_out request: %s, error: %s" % (request, e))
-
-
 
 def handler404(request, *args, **argv):
 	return render(request, 'paginasErrores/404.html', {})

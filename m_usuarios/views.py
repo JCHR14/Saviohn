@@ -18,6 +18,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.humanize.templatetags.humanize import *
+from m_generales.models import Bitacora
 #from django.db import connection
 #import ldap
 #from crmFincesa.settings import EN_SERVIDOR
@@ -102,11 +103,22 @@ def usuarios_detalle(request, id):
 		try:
 			us = User.objects.get(pk = id)
 		except Exception as e:
-			print(e)
 			messages.error(request, 'Ocurrió un problema al obtener usuario')
 			return redirect('usuarios_listado')
+		if us.profile.auth_time_session is not None:
+			hours = float(us.profile.auth_time_session) / 60
+			hours = "{0:.2f}".format(hours)
+		else:
+			hours = 0
+
+		listadpoRpt = list(Bitacora.objects.filter(user = us.pk).values(
+			'reporte__reporte_nombre', 'reporte__subtema__subtema_nombre',
+			'bit_last_date', 'bit_counter'
+			).order_by('reporte__subtema__subtema_nombre'))
 		ctx = {
-			'us': us 
+			'us': us,
+			'hours':hours,
+			'listadpoRpt':listadpoRpt 
 		}
 		return render(request, 'usuarios_detalle.html', ctx)
 
