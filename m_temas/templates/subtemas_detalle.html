@@ -47,7 +47,7 @@
                                         {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
                                             <a class="dropdown-item otros" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
                                             aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}"
-                                            >{{x.reporte_nombre}}</a>
+                                            data-nombre= "{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}">{{x.reporte_nombre}}</a>
                                         {% endif %}
                                     {% endfor %}
                                 </div>
@@ -124,7 +124,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <br>
-                                    <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}}</h4>
+                                    <h4 id="idH4nombre">{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}}</h4>
                                     <h5>{{sub.subtema_subnombre}}</h5>
                                     <br>
                                 </div>
@@ -164,9 +164,13 @@
   <script>
       $(document).ready(function(){
         $(document).on('click', '.principal, .secundario, .otros', function(){
+            var nombre = $(this).data("nombre");
             var idSub = $(this).data("code");
             $where = $(this).data("donde");
             getIframe(idSub, $where);
+            if(nombre){
+                var titulo = $("#idH4nombre").text(nombre);
+            }
         });
 
         function getIframe(codigo, $where){

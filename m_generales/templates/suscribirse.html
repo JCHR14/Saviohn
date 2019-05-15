@@ -1,78 +1,77 @@
 {% extends "base.html" %}
 {% load staticfiles %} 
 {% block content %}
-      <style type="text/css">
-        #formSuscribirse{
-          border-radius: 25px;
-        }
-        .sus_link:hover{
-          color: white !important;
-        }
-      </style>
-      <!-- Promo Block -->
-      <section class="g-py-10">
-        <div class="container">
-          <div class="row no-gutters">
-            <div class="col-md-3">
-              
-            </div> 
-            <div class="col-md-6">
-              <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 bg_my_amarillo" id="formSuscribirse" autocomplete="off" method="POST">
-                <h1 class="color_my_morado toBold">Suscríbete</h1>
-                <p class="toBold color_my_morado">Ten acceso a gran cantidad de información relevante e importante.</p>
-      
-                {% csrf_token %}
-                {% for field in form %}
-                  <div class="form-group g-mb-20">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    
-                    {% if field.help_text %}
-                      <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                    
-                    {% for error in field.errors %}
-                      <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                    </p>
-                  </div>
+  <style type="text/css">
+    #formSuscribirse{
+      border-radius: 25px;
+    }
+    .sus_link:hover{
+      color: white !important;
+    }
+  </style>
+  <section class="g-py-5">
+    <div class="container">
+      <div class="row no-gutters">
+        <div class="col-md-3">
+          
+        </div> 
+        <div class="col-md-6">
+          <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30 bg_my_amarillo" id="formSuscribirse" autocomplete="off" method="POST">
+            <h1 class="color_my_morado toBold">Suscríbete</h1>
+            <p class="toBold color_my_morado">Ten acceso a gran cantidad de información relevante e importante.</p>
+  
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group g-mb-20">
+                {{ field.label_tag }}
+                {{ field }}
+                
+                {% if field.help_text %}
+                  <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
                 {% endfor %}
-                <!--
-                <div class="form-group g-mb-20">
-                  <label>Departamento:</label>
-                  <select class="form-control  bg_input_amarillo" name="depto" id="id_depto" required=""  >
-                    <option value="">-----------</option>
-                    {% for x in listado_depto %}
-                      <option value="{{x.depto_id}}">{{x.depto_nombre}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="form-group g-mb-20">
-                  <label>Municipio:</label>
-                  <select class="form-control  bg_input_amarillo" name="mun" id="id_mun" required=""  >
-                    <option value="">-----------</option>
+                </p>
+              </div>
+            {% endfor %}
+            <!--
+            <div class="form-group g-mb-20">
+              <label>Departamento:</label>
+              <select class="form-control  bg_input_amarillo" name="depto" id="id_depto" required=""  >
+                <option value="">-----------</option>
+                {% for x in listado_depto %}
+                  <option value="{{x.depto_id}}">{{x.depto_nombre}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group g-mb-20">
+              <label>Municipio:</label>
+              <select class="form-control  bg_input_amarillo" name="mun" id="id_mun" required=""  >
+                <option value="">-----------</option>
 
-                  </select>
-                </div>
-                -->
-                <hr class="g-brd-gray-light-v4 g-mx-minus-30">
-                <div class="form-group text-center">
-                  <div class="col-xs-12 p-b-20">
-                    <button class="btn btn-block btn-lg u-btn-primary g-rounded-50 btn_my_white color_my_morado" type="submit">Ingresar</button>
-                  </div>
-                </div>
-
-                <div class="form-group m-b-0">
-                  <div class="col-sm-12 text-center">
-                    ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="sus_link m-l-5 color_my_morado"><b>Iniciar Sesión</b></a>
-                  </div>
-                </div>
-              </form>
+              </select>
+            </div>
+            -->
+            <hr class="g-brd-gray-light-v4 g-mx-minus-30">
+            <div class="form-group text-center">
+              <div class="col-xs-12 p-b-20">
+                <button class="btn btn-block btn-lg u-btn-primary g-rounded-50 btn_my_white color_my_morado" type="submit">Ingresar</button>
+              </div>
             </div>
 
-          </div>
+            <div class="form-group m-b-0">
+              <div class="col-sm-12 text-center">
+                ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="sus_link m-l-5 color_my_morado"><b>Iniciar Sesión</b></a>
+              </div>
+            </div>
+          </form>
         </div>
-      </section>
+
+      </div>
+    </div>
+  </section>
 {% endblock content %}
 
 {% block javascript %}

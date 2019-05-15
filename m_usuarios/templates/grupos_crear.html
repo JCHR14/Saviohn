@@ -3,7 +3,7 @@
 {% block content %}
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2-bootstrap4.css' %}">
-  <section class="g-py-10">
+  <section class="g-py-5">
     <div class="container"> 
       <div class="row no-gutters">
         <div class="col-md-3"></div> 
@@ -11,7 +11,8 @@
           <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
             <h2 class="g-font-weight-300 g-mr-10">Nuevo grupo</h2>
           </div>
-          <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" autocomplete="off" method="POST">
+          <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" id="" 
+          autocomplete="off" method="POST">
             {% csrf_token %}
             <div class="row">
               <div class="col-md-6">
