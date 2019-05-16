@@ -3,10 +3,9 @@
 {% block content %}
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2-bootstrap4.css' %}">
-  <section class="g-py-5">
+  <section class="g-py-100">
     <div class="container">
       <div class="row no-gutters">
-        <div class="col-md-3"></div>
         <div class="col-md-9">
           <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
             <h2 class="g-font-weight-300 g-mr-10">Detalle usuario: {{us.username}}</h2>
@@ -26,35 +25,34 @@
               </ul>
             </div>
             <hr>
-            <h4 class="g-font-weight-300 g-mr-10">Reportes visualizados</h4>
-            <div class="col-md-12">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Reporte</th>
-                      <th>Última visualización</th>
-                      <th>Cantidad de visualizaciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for x in listadpoRpt %}
-                      <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{x.reporte__subtema__subtema_nombre}}, {{x.reporte__reporte_nombre}}</td>
-                        <td>{{x.bit_last_date}}</td>
-                        <td>{{x.bit_counter}}</td>
-                      </tr>
-                    {% endfor %}
-                    
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
-          
+        </div>
+        <div class="col-md-9">
+          <h4 class="g-font-weight-300 g-mr-10">Reportes visualizados</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Reporte</th>
+                  <th>Última visualización</th>
+                  <th>Cantidad de visualizaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        
+                {% for x in listadpoRpt %}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{x.reporte__subtema__subtema_nombre}}, {{x.reporte__reporte_nombre}}</td>
+                  <td>{{x.bit_last_date}}</td>
+                  <td>{{x.bit_counter}}</td>
+                </tr>
+                {% endfor %}
+        
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

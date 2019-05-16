@@ -57,48 +57,8 @@
   <body>
     <main>
       <!-- Header -->
-      <header id="js-header" class="u-header u-header--static">
-        <!-- Top Bar -->
-        <div class="u-header__section u-header__section--dark g-bg-white g-transition-0_3 g-py-5">
-          <div class="container">
-              <div class="col-auto pull-right">
-                <!-- Search -->
-                <div class="d-inline-block g-valign-middle g-pos-rel g-top-minus-1">
-                  <a href="#" class="g-font-size-18 g-color-black"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    aria-controls="searchform-1"
-                    data-dropdown-target="#searchform-1"
-                    data-dropdown-type="css-animation"
-                    data-dropdown-duration="300"
-                    data-dropdown-animation-in="fadeInUp"
-                    data-dropdown-animation-out="fadeOutDown"
-                  >
-                    <i class="fa fa-search"></i>
-                  </a>
-
-                  <!-- Search Form -->
-                  <form id="searchform-1" class="u-searchform-v1 u-dropdown--css-animation 
-                  u-dropdown--hidden g-brd-black g-pa-10 g-mt-10 g-box-shadow-none" action="{% url 'busqueda_reporte' %}">
-                    <div class="input-group">
-                      <input class="form-control rounded-0 u-form-control border-0 g-py-10" type="search"
-                       placeholder="Ingrese el reporte que busca aquí..." name="data">
-
-                      <div class="input-group-addon p-0">
-                        <button class="btn rounded-0 btn-default btn-md g-font-size-14 g-px-18" type="submit">Buscar</button>
-                      </div>
-                    </div>
-                  </form>
-                  <!-- End Search Form -->
-                </div>
-                <!-- End Search -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Top Bar -->
-
-        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-5">
+      <header id="js-header" class="u-header u-header--static u-header--sticky-top ">
+        <div class="u-header__section u-header__section--light g-bg-white g-transition-0_3 g-py-2">
           <nav class="js-mega-menu navbar navbar-toggleable-md">
             <div class="container">
               <!-- Responsive Toggle Button -->
@@ -115,13 +75,12 @@
                 </span>
               </button> 
               <a href="{% url 'inicio' %}" class="navbar-brand">
-                <img src="{% static 'img/logoSavio.png' %}" alt="Image Description">
+                <img src="{% static 'img/logoSavio.png' %}" alt="Image Description" id="idImgLogo">
               </a>
               <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg" id="navBar">
                 <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
                   
                   {% if request.user.is_superuser %}
-                    
                     <li class="nav-item hs-has-sub-menu g-mx-10--lg g-mx-15--xl"
                         data-animation-in="fadeIn"
                         data-animation-out="fadeOut"><a id="nav-link--features" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu--features">Administración</a>
@@ -155,11 +114,32 @@
                       </ul>
                     </li>
                   {% else %}
-                    <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'suscribirse' %}" class="nav-link g-py-7 g-px-0">Suscríbete</a></li>
-                    <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'login' %}" class="nav-link g-py-7 g-px-0">Login</a></li>
+                  <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'suscribirse' %}" class="nav-link g-py-7 g-px-0">Suscríbete</a></li>
+                  <li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="{% url 'login' %}" class="nav-link g-py-7 g-px-0">Login</a></li>
                   {% endif %}
                 </ul>
               </div>
+
+              <!-- Search -->
+              <div class="d-inline-block g-pos-rel g-valign-middle g-ml-30 g-ml-0--lg">
+                <a href="#" class="g-font-size-18 g-color-main" aria-haspopup="true" aria-expanded="false"
+                  aria-controls="searchform-1" data-dropdown-target="#searchform-1" data-dropdown-type="css-animation"
+                  data-dropdown-duration="300" data-dropdown-animation-in="fadeInUp" data-dropdown-animation-out="fadeOutDown">
+                  <i class="fa fa-search"></i>
+                </a>
+                <form class="u-searchform-v1 u-dropdown--css-animation 
+                              u-dropdown--hidden g-brd-black g-pa-10 g-mt-10 g-box-shadow-none" id="searchform-1"
+                  action="{% url 'busqueda_reporte' %}">
+                  <div class="input-group">
+                    <input class="form-control rounded-0 u-form-control border-0 g-py-10" type="search"
+                      placeholder="Ingrese el reporte que busca aquí..." name="data">
+                    <div class="input-group-addon p-0">
+                      <button class="btn rounded-0 btn-default btn-md g-font-size-14 g-px-18" type="submit">Buscar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- End Search -->
             </div>
           </nav>
         </div>
@@ -167,7 +147,7 @@
       {% include 'extras/mensaje.html' %}
       {% block content %}
       {% endblock content %}
-      <div class="bg_my_morado  g-color-white-opacity-0_8 g-py-10">
+      <div class="bg_my_morado  g-color-white-opacity-0_8 g-py-50">
         <div class="container">
           <div class="row">
             <div class="col-lg-6 col-md-6 g-mb-40 g-mb-0--lg">
@@ -183,7 +163,6 @@
               <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
                 <h2 class="u-heading-v2__title h6 text-uppercase mb-0 color_my_amarillo">Enlaces útiles</h2>
               </div>
-
               <nav class="text-uppercase1">
                 <ul class="list-unstyled g-mt-minus-10 mb-0">
                   <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
@@ -217,6 +196,7 @@
                 </ul>
               </nav>
             </div>
+
             <div class="col-lg-3 col-md-6">
               <div class="u-heading-v2-3--bottom g-brd-white-opacity-0_8 g-mb-20">
                 <h2 class="u-heading-v2__title h6 text-uppercase mb-0 color_my_amarillo">Nuestros contactos</h2>
@@ -230,7 +210,7 @@
                       <i class="fa fa-map-marker"></i>
                     </span>
                   </div>
-                  <p class="mb-0">Por definir direccion -- <br> Honduras</p>
+                  <h4 class="h6 g-pr-20 mb-0">Por definir direccion -- <br> Honduras</h4>
                 </div>
                 <!-- End Location -->
 
@@ -241,7 +221,7 @@
                       <i class="fa fa-phone"></i>
                     </span>
                   </div>
-                  <p class="mb-0">(+504) 0000-0000 <br> (+504) 0000-0000</p>
+                  <h4 class="h6 g-pr-20 mb-0">(+504) 0000-0000 <br> (+504) 0000-0000</h4>
                 </div>
                 <!-- End Phone -->
 
@@ -252,9 +232,9 @@
                       <i class="fa fa-globe"></i>
                     </span>
                   </div>
-                  <p class="mb-0">
-                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="mailto:info@savio.com">info@savio.hn</a>
-                  </p>
+                  <h4 class="h6 g-pr-20 mb-0">
+                    <a class="g-color-white-opacity-0_8 g-color-white--hover" href="mailto:info@savio.com">info@savio.hn
+                  </h4>
                 </div>
                 <!-- End Email and Website -->
               </address>
