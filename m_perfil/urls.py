@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.perfil, name='perfil'),
     path('cambiar-password/', views.change_password, name='change_password'),
     path('editar-perfil/', views.editar_perfil, name='editar_perfil'),
+    path('mis-reportes/', views.mis_reportes, name='mis_reportes'),
     #url(r'^cambiar-password/$', views.change_password, name='change_password'),
     #url(r'^activate/(?P<uidb64>.+)/(?P<token>.+)/$',views.activate, name='activate'),
 ]

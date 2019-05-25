@@ -8,10 +8,7 @@ urlpatterns = [
     path('grupos-listado/', views.grupos_listado, name='grupos_listado'),
     path('grupos-crear/', views.grupos_crear, name='grupos_crear'),
     path('grupos-editar/<int:id>/', views.grupos_editar, name='grupos_editar'),
-
     path('usuarios-listado/', views.usuarios_listado, name='usuarios_listado'), 
     path('usuarios-detalle/<int:id>', views.usuarios_detalle, name='usuarios_detalle'),
-    path('usuarios-reset-pwd/<int:id>', views.usuarios_reset_pwd, name='usuarios_reset_pwd'),
-    #path('usuarios-crear/', views.usuarios_crear, name='usuarios_crear'),
-    #path('usuarios-editar/<int:id>/', views.usuarios_editar, name='usuarios_editar'),
+    path('usuarios-reset-pwd/<int:id>/', views.usuarios_reset_pwd, name='usuarios_reset_pwd'),
 ]

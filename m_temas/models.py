@@ -64,5 +64,36 @@ class TmsTema(models.Model):
         managed = False
         db_table = 'tms_tema'
 
+class TmsNotificaciones(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    subtema = models.ForeignKey('TmsSubtema', models.DO_NOTHING, blank=True, null=True)
+    activa = models.BooleanField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'tms_notificaciones'
+
+class TmsFavoritos(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    reporte = models.ForeignKey('TmsReporte', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tms_favoritos'
+
+
+class BitacoraRptVisitas(models.Model):
+    id = models.AutoField(primary_key=True)
+    reporte = models.ForeignKey(
+        'TmsReporte', models.DO_NOTHING, blank=True, null=True)
+    acumulador_segundos = models.CharField(
+        max_length=20, blank=True, null=True)
+    acumulador_visitas = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'bitacora_rpt_visitas'
 

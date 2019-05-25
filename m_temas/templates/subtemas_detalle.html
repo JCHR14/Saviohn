@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{% static '/css/styleiframe.css' %}">
     <link rel="stylesheet" href="{% static '/css/temas_detalle.css' %}">
     <section class="g-py-100">
-        <div class="container">
+        <div class="container"> 
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h3 class="color_my_morado">Bienvenido (a), {{request.user.first_name}}</h3><br>
@@ -20,9 +20,9 @@
                         {% for x in listado_principal %}
                             {% if x.reporte_is_principal %}
                                 <li class="nav-item">
-                                    <a class="nav-link principal" id="grafico-tab" data-toggle="tab" href="#grafico" role="tab" 
+                                    <a class="nav-link principal" id="tms_rpt_{{x.reporte_id}}" data-toggle="tab" href="#grafico" role="tab" 
                                     aria-controls="grafico" aria-selected="false" data-donde = "idWhereIframePrincipal" 
-                                    data-code="{{x.reporte_id}}">{{x.reporte_nombre}}</a>
+                                    data-code="{{x.reporte_id}}" data-fav="divWhereFavPrincipal">{{x.reporte_nombre}}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -30,13 +30,12 @@
                         {% for x in listado_principal %}
                             {% if x.reporte_is_secundario %}
                                 <li class="nav-item">
-                                    <a class="nav-link secundario" id="mapa-tab" data-toggle="tab" href="#mapa" role="tab" 
+                                    <a class="nav-link secundario" id="tms_rpt_{{x.reporte_id}}" data-toggle="tab" href="#mapa" role="tab" 
                                     aria-controls="mapa" aria-selected="false" data-donde = "idWhereIframeSecundario"
-                                    data-code="{{x.reporte_id}}">{{x.reporte_nombre}}</a>
+                                    data-code="{{x.reporte_id}}" data-fav="divWhereFavSecundario">{{x.reporte_nombre}}</a>
                                 </li>
                             {% endif %} 
                         {% endfor %}
-                        
                         
                         {% if mas %}
                             <li class="nav-item dropdown">
@@ -46,7 +45,8 @@
                                     {% for x in listado_principal %}
                                         {% if not x.reporte_is_principal and not x.reporte_is_secundario %}
                                             <a class="dropdown-item otros" href="#otros" data-toggle="tab"  role="tab" aria-controls="otros" 
-                                            aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}"
+                                            aria-selected="false" data-donde = "idWhereIframeOtros" data-code="{{x.reporte_id}}" id="tms_rpt_{{x.reporte_id}}"
+                                            data-fav="divWhereFavOtros"
                                             data-nombre= "{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}">{{x.reporte_nombre}}</a>
                                         {% endif %}
                                     {% endfor %}
@@ -65,7 +65,7 @@
                                     <p>{{sub.subtema_descripcion}}</p>
                                     <br>
                                     <p>Tags: <br>
-                                        {% for x in tags %}                                           
+                                        {% for x in tags %}                                   
                                             {% if x != ' ' %}
                                             <a href="#!">#{{x}}</a> 
                                             {% endif %}
@@ -86,35 +86,44 @@
                         </div>
                         <div class="tab-pane fade" id="grafico" role="tabpanel" aria-labelledby="grafico-tab">
                             <div class="row">
-                                <div class="col-md-12">
-                                    {% for x in listado_principal %}
-                                        {% if x.reporte_is_principal %}
+                                {% for x in listado_principal %}
+                                    {% if x.reporte_is_principal %}
+                                        <div class="col-md-9">
                                             <input type="hidden" name="pkPrim" id="idPkPrim" value="">
                                             <br>
                                             <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}</h4>
                                             <h5>{{sub.subtema_subnombre}}</h5>
                                             <br>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="col-md-12" id="idWhereIframePrincipal">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div id="divWhereFavPrincipal"><br>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
 
+                                <div class="col-md-12" id="idWhereIframePrincipal">
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
                             <div class="row">
-                                <div class="col-md-12">
-                                    {% for x in listado_principal %}
-                                        {% if x.reporte_is_secundario %}
+                                {% for x in listado_principal %}
+                                    {% if x.reporte_is_secundario %}
+                                        <div class="col-md-9">
                                             <input type="hidden" name="pkSecun" id="idPkSecun" value="{{x.reporte_id}}">
                                             <br>
                                             <h4>{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}} / {{x.reporte_nombre}}</h4>
                                             <h5>{{sub.subtema_subnombre}}</h5>
                                             <br>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div id="divWhereFavSecundario"><br>
+                                                
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                                 <div class="col-md-12" id="idWhereIframeSecundario">
 
                                 </div>
@@ -122,11 +131,16 @@
                         </div>
                         <div class="tab-pane fade" id="otros" role="tabpanel" aria-labelledby="mapa-tab">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-9">
                                     <br>
                                     <h4 id="idH4nombre">{{sub.tema.tema_nombre}}, {{sub.subtema_nombre}}</h4>
                                     <h5>{{sub.subtema_subnombre}}</h5>
                                     <br>
+                                </div>
+                                <div class="col-md-3">
+                                    <div id="divWhereFavOtros"><br>
+                                
+                                    </div>
                                 </div>
                                 <div class="col-md-12" id="idWhereIframeOtros"></div>
                             </div>
@@ -167,12 +181,32 @@
             var nombre = $(this).data("nombre");
             var idSub = $(this).data("code");
             $where = $(this).data("donde");
+            $fav = $(this).data("fav");
             getIframe(idSub, $where);
             if(nombre){
                 var titulo = $("#idH4nombre").text(nombre);
             }
         });
+        $(document).on('click', '.favRptSv', function () {
+              if ($(this).data("id")) {
+                  var fav = $(this).data("fav");
+                  $.ajax({
+                      type: "GET",
+                      data: {
+                          codigo: $(this).data("id"),
+                      },
+                      url: "{% url 'doFavorito' %}",
+                      success: function (data) {
+                          setFavorito(data.favorito, fav, data.codigo);
+                      },
+                      error: function (jqXHR, textStatus, errorThrown) {
+                          alert(textStatus + ': ' + errorThrown + '. ' + 'Intenta de Nuevo');
+                      },
+                      timeout: 10000
+                  });
+              }
 
+          });        
         function getIframe(codigo, $where){
             $.ajax({
                 type: "GET",
@@ -182,6 +216,7 @@
                 url: "{% url 'reportes_listado' 0 %}",
                 success: function(data){
                     setIframe(data.listado, $where);
+                    setFavorito(data.favorito, $fav, codigo);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert(textStatus + ': ' + errorThrown +'. '+'Intenta de Nuevo');
@@ -189,11 +224,9 @@
                 timeout: 10000
             });
         }
-        
         function setIframe(data, $where){
             var toiframe = data.reporte_iframe
             var res = toiframe.substring(0,7);
-
             if(res == "<iframe"){
                 $('#'+$where).empty();
                 $('#'+$where).append([
@@ -210,7 +243,26 @@
                 ].join(''));
             }
         }
-        
+        function setFavorito(isfav, $fav, reporte ){
+            $("#"+$fav).empty();
+            if(isfav == false){
+                $("#"+$fav).append(
+                    '<br>' +
+                    '<h5><a href="#!" data-id="'+ reporte+'" data-fav="'+$fav+'" '+
+                    ' class="g-color-black g-color-black--hover g-text-underline--none--hover favRptSv">' +
+                    '<i class="fa fa-check color_my_amarillo favRptSv"></i> Marcar como favorito' +
+                    '</a></h5>' 
+                    )
+            }else{
+                $("#"+$fav).append(
+                    '<br>'+
+                    '<h5><a href="#!" data-id="' + reporte +'" data-fav="' + $fav + '" ' + 
+                    'class="g-color-black g-color-black--hover g-text-underline--none--hover favRptSv">' +
+                    '<i class="fa fa-heart color_my_amarillo "></i> Reporte favorito' +
+                    '</a></h5>'
+                )
+            }
+        }
       });
   </script>
   <script>
@@ -219,7 +271,6 @@
             var data = $(this).data("url");
             copyToClipboard(data);
         });
-
         function copyToClipboard(element) {
             var $temp = $("<input>");
             $("body").append($temp);
@@ -227,6 +278,14 @@
             document.execCommand("copy");
             $temp.remove();
         }
+      });
+  </script>
+  <script>
+      $(document).ready(function(){
+        var donde = "{{request.GET.code}}";
+        if(donde != ""){
+            $("#tms_rpt_"+donde).click();
+        } 
       });
   </script>
 {% endblock javascript %}

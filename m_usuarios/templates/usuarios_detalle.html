@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
-  <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2-bootstrap4.css' %}">
   <section class="g-py-100">
     <div class="container">
       <div class="row no-gutters">
@@ -15,11 +13,14 @@
               <ul class="list-unstyled g-px-30 g-mb-0">
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Nombre: </b> {{us.first_name}} {{us.last_name}}</li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Correo electrónico: </b> {{us.email}}</li>
-                <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Estado: </b> {{us.is_active}}</li>
+                <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10" id="setEstado">
+                  <b>Estado: </b>  {% if us.is_active %} Activo {% else %} Inactivo{% endif %}
+                </li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Tiempo de uso: </b> {{hours}} horas</li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Ultima sesión: </b> {{us.last_login}} </li>
                 <li class="g-brd-bottom g-brd-gray-light-v3 g-py-10"><b>Fecha de registro: </b> {{us.date_joined}}</li>
                 <li class="g-py-8 text-right">
+                  <a href="#!" data-id="{{us.id}}" id="idCambiarEstado" class="btn btn-secondary btn-sm">Cambiar Estado</a>
                   <a href="{% url 'usuarios_reset_pwd' us.id %}" class="btn btn-success btn-sm">Cambiar contraseña</a>
                 </li>
               </ul>
@@ -40,7 +41,6 @@
                 </tr>
               </thead>
               <tbody>
-        
                 {% for x in listadpoRpt %}
                 <tr>
                   <td>{{forloop.counter}}</td>
@@ -49,7 +49,6 @@
                   <td>{{x.bit_counter}}</td>
                 </tr>
                 {% endfor %}
-        
               </tbody>
             </table>
           </div>
@@ -60,11 +59,34 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script src="{% static 'vendor/select2/dist/js/select2.min.js' %}"></script>
-  <script src="{% static 'js/inputsRequeridos.js' %}"></script>
   <script>
     $(document).on('ready', function(){
+      $(document).on('click', '#idCambiarEstado', function () {
+        if(confirm("¿ Desea cambiar estado de usuario ?")){
+          if ($(this).data("id") != '') {
+            $.ajax({
+              type: "GET",
+              data: {
+                codigo: $(this).data("id"),
+              },
+              url: "{% url 'usuarios_detalle' 0  %}",
+              success: function (data) {
+                $("#setEstado").text("");
+                $("#setEstado").append("<b>Estado: </b> " + setEstado(data.estado)   +" ");
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + ': ' + errorThrown + '. ' + 'Intenta de Nuevo');
+              },
+              timeout: 10000
+            });
+          }
 
+        }
+      });
+
+      function setEstado(estado){
+        return estado == true ? "Activo" : "Inactivo"
+      }
     });
   </script>
 {% endblock javascript %}

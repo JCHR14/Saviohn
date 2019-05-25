@@ -1,0 +1,191 @@
+/* Add here all your css styles (customizations) */
+
+
+html {
+  font-size: 14px; 
+  overflow-x: hidden; }
+
+body {
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #555;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga", "kern";
+  text-rendering: optimizelegibility;
+  background-color: #fff; }
+
+
+
+.incio_my_title{
+  padding-top: 5rem !important ;
+}
+
+.toBold{
+	font-weight: bold;
+}
+
+.bg_input_amarillo{
+  background-color: #fff6dd !important;
+  color: #523192;
+  font-weight: bold;
+  border-radius: 25px;
+}
+
+.bg_input_amarillo:focus, 
+.bg_input_amarillo:hover,
+.bg_input_amarillo:active{
+  background-color: #fff6dd !important;
+}
+
+.bg_my_morado{
+	background-color: #523192 !important;
+}
+
+.color_my_morado{
+	color: #523192 !important;
+}
+
+.bg_my_amarillo{
+	background-color: #ffbe00 !important;
+}
+
+.color_my_amarillo{
+	color: #ffbe00;
+}
+
+.btn_my_white{
+  background-color: #fff ;
+  font-weight: bold;
+}
+
+
+a {
+  color: #ffbe00;
+  outline: none; }
+
+a:focus,
+a:hover {
+  color: #ffbe00 !important; }
+
+.bg_subtema{
+    transition: transform 0.1s ease-in-out;
+  }
+
+.bg_subtema:hover{
+  cursor: pointer; 
+  -webkit-transform: scale(1.05) ;
+  -ms-transform: scale(1.05) ;
+  transform: scale(1.05) ;
+  transition: transform 0.1s ease-in-out;
+}
+
+.nav-link {
+  color: #555; }
+ 
+.nav-link:focus, 
+.nav-link:hover {
+  color: #555; }
+/*
+amarillo: #ffbe00
+morado: #523192
+*/
+figure {
+  margin-bottom: 0; }
+
+.li_subtema{
+  margin-bottom: 7px !important;
+}
+
+.icon_img{
+   margin-bottom: 4px !important;
+}
+
+.subtema_tipo{
+  text-decoration: none !important;
+}
+
+
+.topadd{
+  padding-bottom: 20px!important;
+}
+/*
+.circle{ 
+  height: 100px;
+  width: 100px;
+  background-color: #ffbe00 !important;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center; 
+  font-weight: bold;
+  color: #523192 !important;
+}
+*/
+.img_width{
+  width: 40% !important;
+}
+.circle > h5 {
+  font-weight: bold;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.g-brd-morado {
+  border-color: #523192 !important;
+  border-radius: 25px;
+
+}
+.bg_subtema > i.iconSubTema{
+  text-align: left;
+}
+
+#idDescQuien{
+  font-size: 1.3em;
+}
+
+
+
+.bg_reportes_base{
+  background-color: #00aeef !important;
+  width: 100%;
+  height: 140px;
+  padding-top: 15px;
+  padding-left: 15px;
+  color: #fff;
+}
+.ver_reporte{
+  text-align: center !important;
+  color: white;
+} 
+
+
+.list-group-item.active {
+  background-color: #283047;
+  border-color: #1b1b1b; 
+}
+
+.iconPointer:hover{
+  cursor: pointer;
+}
+
+#managerPT{
+    padding-top: 100px !important;
+  }
+
+@media only screen and (max-width: 998px) {
+  #managerPT{
+    padding-top: 5px !important;
+  }
+  #idImgLogo{
+    width: 70%;
+  }
+  .navbar-brand{
+    margin-right: -3rem !important;
+  }
+  h1{
+    font-size: 30px  !important;
+  }
+}

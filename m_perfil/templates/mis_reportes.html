@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<section class="g-py-100">
+    <div class="container">
+        <div class="row">
+            {% include 'perfil_menu.html' %}
+            <div class="col-lg-9">
+                <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
+                    <h2 class="g-font-weight-300 g-mr-10">Mis reportes favoritos</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Reporte</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for x in listado %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>
+                                                {{x.reporte__subtema__subtema_nombre}},
+                                                {{x.reporte__reporte_nombre}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'reporte_favorito' %}?code={{x.reporte__reporte_id}}" 
+                                                class="btn btn-secondary btn-sm g-color-black g-color-black--hover g-text-underline--none--hover" style="font-size: 1.3em;"><i class="fa fa-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="3">
+                                                <h5>No has agregado reporte a tu lista de favoritos</h5>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                        
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block javascript %}
+<script>
+    $(document).ready(function () {
+        $("#idMisReportes").addClass("active");
+    });
+</script>
+{% endblock javascript %}

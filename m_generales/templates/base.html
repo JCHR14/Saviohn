@@ -7,11 +7,16 @@
 
     <!-- Required Meta Tags Always Come First -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="Sitio web Savio">
-    <meta name="keywords" content="Por definir">
+    <meta name="keywords" content="Por definir {{reporte_descripcion}}">
     <meta name="author" content="Juan Carlos Hernández">
+    <!--
+      <meta http-equiv="Cache-Control"
+       content="max-age=2505600" , content="public" , content="must-revalidate">
+    -->
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!--
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135596866-1"></script>
@@ -119,9 +124,44 @@
                   {% endif %}
                 </ul>
               </div>
+              {% if request.user.id %}
+                <div class="d-inline-block g-pos-rel g-valign-middle g-ml-30 g-ml-0--lg mr-4">
+                  <a href="#" id="basket-bar-invoker"
+                      class="u-icon-v1 g-color-main  g-text-underline--none--hover g-font-size-18
+                      g-width-20 g-height-20"
+                      aria-controls="basket-bar"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      data-dropdown-event="hover"
+                      data-dropdown-target="#basket-bar"
+                      data-dropdown-type="css-animation"
+                      data-dropdown-duration="300"
+                      data-dropdown-hide-on-scroll="false"
+                      data-dropdown-animation-in="fadeIn"
+                      data-dropdown-animation-out="fadeOut">
+                    <i class="fa fa-bell" id="idIconNot"></i>
 
-              <!-- Search -->
-              <div class="d-inline-block g-pos-rel g-valign-middle g-ml-30 g-ml-0--lg">
+                    <div id="basket-bar" class="u-basket__bar u-dropdown--css-animation u-dropdown--hidden 
+                      g-text-transform-none g-brd-top g-brd-1 g-brd-black g-color-main"
+                      aria-labelledby="basket-bar-invoker">
+                      <div class="js-scrollbar g-height-280" style="height: 250px; overflow-y: scroll; overflow-x: hidden;">
+                        <div id="idDivSetNot" >
+                          <div class="row" style="padding: 4px;">
+                            <div class="col-md-12">
+                              <a href="#!" class="g-color-black g-color-black--hover 
+                                g-text-underline--none--hover text-center g-font-size-12">
+                                No hay notificaciones nuevas
+                              </a>
+                              <hr>
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+              <div class="d-inline-block g-pos-rel g-valign-middle g-ml-30 g-ml-0--lg mr-4">
                 <a href="#" class="g-font-size-18 g-color-main" aria-haspopup="true" aria-expanded="false"
                   aria-controls="searchform-1" data-dropdown-target="#searchform-1" data-dropdown-type="css-animation"
                   data-dropdown-duration="300" data-dropdown-animation-in="fadeInUp" data-dropdown-animation-out="fadeOutDown">
@@ -132,19 +172,19 @@
                   action="{% url 'busqueda_reporte' %}">
                   <div class="input-group">
                     <input class="form-control rounded-0 u-form-control border-0 g-py-10" type="search"
-                      placeholder="Ingrese el reporte que busca aquí..." name="data">
+                      placeholder="Ingrese el reporte que busca aquí..." name="data" maxlength="50">
                     <div class="input-group-addon p-0">
                       <button class="btn rounded-0 btn-default btn-md g-font-size-14 g-px-18" type="submit">Buscar</button>
                     </div>
                   </div>
                 </form>
               </div>
-              <!-- End Search -->
             </div>
           </nav>
         </div>
       </header>
       {% include 'extras/mensaje.html' %}
+    
       {% block content %}
       {% endblock content %}
       <div class="bg_my_morado  g-color-white-opacity-0_8 g-py-50">
@@ -180,19 +220,27 @@
                   {% if request.user.id %}  
                     <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                       <h4 class="h6 g-pr-20 mb-0">
-                        <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Reportes</a>
+                        <a class="g-color-white-opacity-0_8 g-color-white--hover" 
+                        href="/temas/busqueda-reporte/?data=Novedades">Novedades</a>
+                        <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                      </h4>
+                    </li>
+                    <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                      <h4 class="h6 g-pr-20 mb-0">
+                        <a class="g-color-white-opacity-0_8 g-color-white--hover" 
+                        href="/temas/busqueda-reporte/?data=top">Top busquedas</a>
                         <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
                       </h4>
                     </li>
                   {% else %}
                     <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                       <h4 class="h6 g-pr-20 mb-0">
-                        <a class="g-color-white-opacity-0_8 g-color-white--hover" href="#">Suscríbete</a>
+                        <a class="g-color-white-opacity-0_8 g-color-white--hover" 
+                        href="{% url 'suscribirse' %}">Suscríbete</a>
                         <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
                       </h4>
                     </li>
                   {% endif %}
-                  
                 </ul>
               </nav>
             </div>
@@ -319,7 +367,7 @@
     <script src="{% static 'js/components/hs.carousel.js' %} "></script>
     <script src="{% static 'js/components/hs.header.js' %} "></script>
     <script src="{% static 'js/helpers/hs.hamburgers.js' %} "></script>
-    <script src="{% static '/js/components/hs.dropdown.js' %} "></script>
+    <script src="{% static 'js/components/hs.dropdown.js' %} "></script>
     
     <script src="{% static 'js/components/hs.tabs.js' %} "></script>
     <script src="{% static 'js/components/hs.popup.js' %} "></script>
@@ -340,17 +388,7 @@
         $.HSCore.components.HSPopup.init('.js-fancybox');
         // initialization of go to
         $.HSCore.components.HSGoTo.init('.js-go-to');
-        // initialization of text animation (typing)
-        $(".u-text-animation.u-text-animation--typing").typed({
-          strings: [
-            "an awesome template",
-            "perfect template",
-            "just like a boss"
-          ],
-          typeSpeed: 60,
-          loop: true,
-          backDelay: 1500
-        });
+
       });
 
       $(window).on('load', function () {
@@ -377,12 +415,10 @@
           $.HSCore.components.HSTabs.init('[role="tablist"]');
         }, 200);
       });
-
     </script>
 
     <script>
       $(document).on('ready', function(){
-        
         $('.footerMySlides').hide();
         var myIndex = 0;
         carousel();
@@ -398,7 +434,80 @@
 
       });
     </script>
+    <script>
+      $(document).on('ready', function(){
+        (function () {
+          setInterval(function () { 
+            $.ajax({
+              type: "GET",
+              data: {
+              },
+              url: "{% url 'getNotification'  %}",
+              success: function (data) {
+                fullNotification(data.listado);
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + ': ' + errorThrown + '. ' + 'Intenta de Nuevo');
+              },
+              timeout: 10000
+            });
+        
+          }, 6000); 
+        })();
 
+        $(document).on("click", ".quitarNot", function(){
+          $.ajax({
+            type: "GET",
+            data: {
+              'codigo': $(this).data("id"),
+            },
+            url: "{% url 'desNotification'  %}",
+            success: function (data) {
+              fullNotification(data.listado);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              console.log(textStatus + ': ' + errorThrown + '. ' + 'Intenta de Nuevo');
+            },
+            timeout: 10000
+          });
+        });
+
+        function fullNotification(data){
+          $('#idDivSetNot').empty();
+          $("#notiCount").remove();
+          if(data.length > 0){
+            $('<span class="u-badge-v1--sm g-color-black g-rounded-50x" id="notiCount">'+data.length +'</span>').insertBefore("#idIconNot");
+            $.each(data, function(key, val){
+              $('#idDivSetNot').append(
+                '<div class="u-basket__product">'+
+                '<div class="row" style="padding: 15px 10px ;">' +
+                  '<div class="col-md-12">' +
+                    '<a href="/temas/subtemas-detalle/'+ val.subtema__subtema_id+'/" class="g-color-black g-color-black--hover g-text-underline--none--hover text-center g-font-size-12"> ' +
+                    ' Se ha ingresado un nuevo reporte en la categoria de:  <b>' + val.subtema__subtema_nombre +' </b> ' + 
+                    '<sup class="g-font-size-8 g-color-black">' + val.fecha_creacion + '</sup></a>' +
+                  '</div>' +
+                  '<button class="u-basket__product-remove quitarNot" type="button" data-id="' + val.id + '">&times;</button>' +
+                '</div>' +
+                '</div>'
+              );
+            });
+          }else{ 
+            $('#idDivSetNot').append(
+              '<div class="row">' +
+              '<div class="col-md-12">' +
+              '<a href="#!" class="g-color-black g-color-black--hover ' +
+              'g-text-underline--none--hover text-center g-font-size-12"> ' +
+              'No hay notificaciones nuevas' +
+              '</a>' +
+              '<hr>' +
+              '</div>'+
+              '</div>'
+            );
+
+          }
+        }
+      });
+    </script>
     {% block javascript %}
 
     {% endblock %}

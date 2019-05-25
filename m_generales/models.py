@@ -47,3 +47,14 @@ class AuthBitacoraSession(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_bitacora_session'
+
+
+class BitacoraBusqUser(models.Model):
+    busq_id = models.AutoField(primary_key=True)
+    busq_query = models.CharField(max_length=50, blank=True, null=True)
+    busq_fecha = models.DateTimeField(blank=True, null=True, auto_now = True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'bitacora_busq_user'

@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.db.models import Count, Sum
 from django.db import transaction
+from m_temas.models import TmsFavoritos
 
 @login_required()
 def perfil(request):
@@ -60,3 +61,16 @@ def editar_perfil(request):
 	else:
 		ctx = {}
 		return render(request, 'editar_perfil.html', ctx )
+
+
+@login_required()
+def mis_reportes(request):
+	listado = TmsFavoritos.objects.filter(user = request.user.id).values(
+		"reporte__reporte_id", "reporte__reporte_nombre", 
+		"reporte__subtema__subtema_id", "reporte__subtema__subtema_nombre"
+		)
+	ctx = {
+		"listado": listado
+	}
+	return render(request, 'mis_reportes.html', ctx)
+

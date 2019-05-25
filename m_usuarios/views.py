@@ -19,10 +19,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.humanize.templatetags.humanize import *
 from m_generales.models import Bitacora
-#from django.db import connection
-#import ldap
-#from crmFincesa.settings import EN_SERVIDOR
-#from django.utils.encoding import force_unicode
 
 @login_required()
 @transaction.atomic
@@ -97,6 +93,24 @@ def usuarios_listado(request):
 
 @login_required()
 def usuarios_detalle(request, id):
+	if request.is_ajax():
+		import json
+		codigo = request.GET['codigo']
+		try:
+			user = User.objects.get(pk = codigo)
+			user.is_active = False if user.is_active else True
+			user.save()
+			print(user.is_active)
+			data = json.dumps({
+                            'estado': user.is_active,
+                        })
+		except Exception as e:
+			data = json.dumps({
+                    'estado': '' ,
+                })
+
+		return HttpResponse(data, content_type='application/json')
+
 	if request.POST:
 		pass
 	else:

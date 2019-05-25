@@ -1,0 +1,67 @@
+.border_subtema{
+	/*border-radius: 25px !important; */
+	border: 1px solid #523192 !important ;
+	padding: 10px 15px;
+	margin: 10px 0px;
+}
+ 
+.border_subtema:hover{
+	background-color: #fcf7f7;
+}
+.icono_mostrar{
+	cursor: pointer;
+}
+.toShowRpt:hover{
+	background-color: #fff !important;
+}
+
+.toShowRpt{
+	min-height: 400px; 
+}
+
+.rptLink:hover{
+	cursor: pointer;
+}
+
+.rptLogo{
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	display: inline-block;
+}
+.imglogo{
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+}
+
+.noDeco{
+	text-decoration: none;
+	color: none;
+}
+
+.noDeco:hover, .noDeco:active, .noDeco:visited, .noDeco:active {
+	text-decoration: none;
+	color: none;
+}
+
+.border_subtema > h4, .border_subtema > p {
+	color: #555  !important;
+}
+
+.pDescripcion {
+	border-bottom: 1px solid #ffbe00;
+	padding-bottom: 10px !important; 
+}
+.pSubNombre{
+	font-weight: 600;
+}
+.masInfo > span{
+	color: #000;
+}
+
+.titleRelacionados{
+	padding-bottom: 15px;
+	margin-top: 20px;
+	border-bottom: 1px solid #ffbe00;
+}

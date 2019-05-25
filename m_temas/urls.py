@@ -15,8 +15,13 @@ urlpatterns = [
     path('subtemas-nuevo/', views.subtemas_nuevo, name='subtemas_nuevo'),
     path('subtemas-editar/<int:id>/', views.subtemas_editar, name='subtemas_editar'),
     path('subtemas-detalle/<int:id>/', views.subtemas_detalle, name='subtemas_detalle'),
+    path('reporte-favorito/', views.reporte_favorito, name='reporte_favorito'),
 
 	path('reportes-listado/<int:subtema>/', views.reportes_listado, name='reportes_listado'),  
 	path('reportes-nuevo/<int:subtema>/', views.reportes_nuevo, name='reportes_nuevo'),
-    path('reportes-editar/<int:id>/', views.reportes_editar, name='reportes_editar'),    
+    path('reportes-editar/<int:id>/', views.reportes_editar, name='reportes_editar'),  
+    path('getNotification/', views.getNotification, name='getNotification'),
+    path('desNotification/', views.desNotification, name='desNotification'),
+
+    path('doFavorito/', views.doFavorito, name='doFavorito'),
 ]
