@@ -89,7 +89,7 @@ DATABASES = {
 #SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #SESSION_COOKIE_AGE = 5 * 60 #
 #SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-
+ 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',

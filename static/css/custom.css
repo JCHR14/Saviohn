@@ -175,6 +175,10 @@ figure {
     padding-top: 100px !important;
   }
 
+#idImgLogo{
+  width: 90%;
+}
+
 @media only screen and (max-width: 998px) {
   #managerPT{
     padding-top: 5px !important;

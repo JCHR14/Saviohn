@@ -21,3 +21,10 @@ def floatcomma(value):
 	intpart, dec = orig.split(".")
 	intpart = intcomma(intpart)
 	return ".".join([intpart, dec])
+
+def is_number(x):
+	try:
+		a = float(x)
+	except Exception as e:
+		a = 0
+	return a

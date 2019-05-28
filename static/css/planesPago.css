@@ -1,0 +1,57 @@
+/*
+amarillo: #ffbe00
+morado: #523192
+*/
+.planesPago{
+    border-top: 12px solid #523192;
+    border-bottom: 12px solid #523192;
+    border-left: 6px solid #523192;
+    border-right: 6px solid #523192;
+    border-radius: 15px;
+    margin: 5px !important;
+    min-height: 628px !important;
+}
+
+.planesTitulo{
+    text-align: center;
+    font-size: 2.3em;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #523192;
+    color:white;
+}
+
+.planesSubTitulo{
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.2em;
+    color: #523192;
+}
+
+.planesDetalle{
+    color: #523192;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.planesPrecio{
+    margin: 25px;
+    text-align: center;
+    background-color: #ffbe00;
+    padding: 15px;
+    border-radius: 15px;
+
+}
+.planesPrecioTitulo{
+    color: #523192;
+    font-size: 2.8em;
+}
+
+.planesPrecio > h4{
+    text-align: left;
+    color: #523192;
+    font-weight: bold;
+}

@@ -7,6 +7,7 @@ from django.urls import path, include, re_path
 urlpatterns = [
     url(r'^$', views.inicio, name='inicio'),
     url(r'^suscribirse/$', views.suscribirse, name='suscribirse'),
+    url(r'^nuestros-planes/$', views.nuestros_planes, name='nuestros_planes'),
     url(r'^reportes/$', views.reportes, name='reportes'),
     url(r'^salir/$', views.salir, name='salir'),
     url(r'^quien-soy/$', views.quien_soy, name='quien_soy'),

@@ -6,7 +6,7 @@
   <section class="g-py-100">
     <div class="container"> 
       <div class="row no-gutters">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="d-flex align-items-center justify-content-sm-between g-mb-5">
             <h2 class="g-font-weight-300 g-mr-10">Nuevo grupo</h2>
           </div>
@@ -17,9 +17,84 @@
               <div class="col-md-6">
                 <div class="form-group g-mb-20">
                   <label class="g-mb-10 text-uppercase toBold">Nombre</label>
-                  <input type="text" name="name" id="id_name" class="form-control" maxlength="80" required>
+                  <input type="text" name="name" id="id_name" class="form-control" maxlength="80" 
+                  required autofocus>
                 </div>
-              </div>                            
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Estado</label>
+                  <select name="group_status" id="id_group_status" class="form-control" required>
+                    <option value="">-----------------</option>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">¿ Es grupo para Cliente ?</label>
+                  <select name="group_for_client" id="id_group_for_client" class="form-control" required>
+                    <option value="">-----------------</option>
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Subtitulo</label>
+                  <input type="text" name="group_subtitulo" id="id_group_subtitulo" class="form-control paraClientes" 
+                  maxlength="50" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Detalle de grupo</label>
+                  <textarea name="group_detalle" id="id_group_detalle" class="form-control paraClientes" rows="2" 
+                  maxlength="80" style="resize: none;"  ></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Sub detalle de grupo</label>
+                  <textarea name="group_sub_detalle" id="id_group_sub_detalle" class="form-control paraClientes" rows="2" 
+                  maxlength="80" style="resize: none;"></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">¿ Se definirá Precios ?</label>
+                  <select name="group_need_price" id="id_group_need_price" class="form-control paraClientes" required>
+                    <option value="">-----------------</option>
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Precio Mensual</label>
+                  <input type="number" name="group_price_month" id="id_group_price_month" class="form-control paraClientes needPrice">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Precio Anual</label>
+                  <input type="number" name="group_price_anual" id="id_group_price_anual" class="form-control paraClientes needPrice">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group g-mb-20">
+                  <label class="g-mb-10 text-uppercase toBold">Detalles de pago</label>
+                  <input type="text" name="group_price_detalle" id="id_group_price_detalle" maxlength="20" 
+                  class="form-control paraClientes dontNeedPrice">
+                </div>
+              </div>
+
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -51,6 +126,24 @@
   <script src="{% static 'js/inputsRequeridos.js' %}"></script>
   <script>
     $(document).on('ready', function(){
+      $(document).on("change", "#id_group_for_client", function(){
+        if($(this).val() == 0 || $(this).val()=="" ){
+          $(".paraClientes").attr("readonly", true);
+        }else{
+          $(".paraClientes").removeAttr("readonly");
+        }
+      });
+
+      $(document).on("change", "#id_group_need_price", function(){
+        if($(this).val() == 0 || $(this).val()=="" ){
+          $(".needPrice").attr("readonly", true);
+          $(".dontNeedPrice").removeAttr("readonly");
+        }else{
+          $(".needPrice").removeAttr("readonly");
+          $(".dontNeedPrice").attr("readonly", true);
+        }
+      });
+
       $(".select2").select2({});
     });
   </script>

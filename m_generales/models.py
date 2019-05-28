@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -24,6 +24,33 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         profile.objects.create(auth=instance)
     instance.profile.save()
+ 
+class AuthGroupExtended(models.Model):
+    group = models.OneToOneField(Group, models.DO_NOTHING, primary_key=True)
+    group_for_client = models.BooleanField(blank=True, null=True)
+    group_detalle = models.CharField(max_length=500, blank=True, null=True)
+    group_sub_detalle = models.CharField(max_length=500, blank=True, null=True)
+    group_need_price = models.BooleanField(blank=True, null=True)
+    group_price_month = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True)
+    group_price_anual = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True)
+    group_price_detalle = models.CharField(
+        max_length=20, blank=True, null=True)
+    group_status = models.BooleanField(blank=True, null=True)
+    group_subtitulo = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_extended'
+
+
+#@receiver(post_save, sender=Group)
+# def update_group(sender, instance, created, **kwargs):
+    #if created:
+        #AuthGroupExtended.objects.create(group=instance)
+    #instance.AuthGroupExtended.save()
+
 
 class Bitacora(models.Model):
     bit_id = models.AutoField(primary_key=True)

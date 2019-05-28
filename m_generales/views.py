@@ -68,15 +68,12 @@ def suscribirse(request):
 			user.email = user.username
 			user.profile.auth_email_confirmed = False#GralMunicipios.objects.get(pk = request.POST['mun'])
 			user.save()
- 			
 			current_site = get_current_site(request)
 			subject = 'Savio | activación de cuenta'
-
 			toRange = 15
 			x1 = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(toRange))
 			x2 = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(toRange))
 			codigo_con = str(x1)+''+str(user.pk)+''+str(x2)
-
 			message = render_to_string('extras/activacionCuenta.html', {
 				'user': user,
 				'domain': current_site.domain,
@@ -92,6 +89,16 @@ def suscribirse(request):
 	else:
 		form = SignUpForm()
 	return render(request, 'suscribirse.html', {'form': form})
+
+def nuestros_planes(request):
+	listado = list(AuthGroupExtended.objects.filter(group_status = True, group_for_client = True).values(
+    	'group_detalle', 'group_sub_detalle', 'group_need_price', 'group_price_month', 'group_subtitulo',
+        'group_price_anual', 'group_price_detalle', 'group__id', 'group__name'))
+
+	ctx ={
+		'listado': listado
+	}
+	return render(request, 'nuestros_planes.html', ctx)
 
 def reset_password(request):
 	if request.POST:

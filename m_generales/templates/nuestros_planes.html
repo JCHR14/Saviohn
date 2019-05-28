@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/planesPago.css' %}">
+<section class="g-py-100">
+    <div class="container">
+        <div class="row no-gutters">
+            
+            {% for x in listado %}
+                <div class="col-md-3">
+                    <div class="planesPago">
+                        <h3 class="planesTitulo">{{x.group__name}}</h3>
+                        <h4 class="planesSubTitulo">{{x.group_subtitulo}}</h4>
+                        <p class="planesDetalle">{{x.group_detalle}}</p>
+                        <p class="planesDetalle">{{x.group_sub_detalle}}</p>
+
+                        {% if x.group_need_price is True %}
+                            <div class="planesPrecio">
+                                <h4>Mensual</h4>
+                                <h3 class="planesPrecioTitulo">{{x.group_price_month}}</h3>
+                            </div>
+                            <div class="planesPrecio">
+                                <h4>Anual</h4>
+                                <h3 class="planesPrecioTitulo">{{x.group_price_anual}}</h3>
+                            </div>
+                        {% else %}
+                            <br><br>
+                            <div class="planesPrecio">
+                                <h3 class="planesPrecioTitulo">{{x.group_price_detalle}}</h3>
+                            </div>
+                        {% endif %}
+                            
+                    </div>
+                </div>
+            {% endfor %}
+                
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block javascript %}
+<script>
+    $(document).on('ready', function () {
+        $("input[type=text], input[type=password], input[type=email], input[type=date]").addClass('form-control form-control-md  bg_input_amarillo');
+        $('#formSuscribirse').find('label').addClass('g-mb-10 toBold color_my_morado text-uppercase');
+    });
+</script>
+{% endblock javascript %}

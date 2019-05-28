@@ -18,8 +18,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.humanize.templatetags.humanize import *
-from m_generales.models import Bitacora
-
+from m_generales.models import (Bitacora, AuthGroupExtended)
+from savio.utiles import *
+ 
 @login_required()
 @transaction.atomic
 def grupos_listado(request):
@@ -38,7 +39,32 @@ def grupos_crear(request):
 				gp = Group()
 				gp.name = request.POST['name'][:80]
 				gp.save()
-
+				gr = AuthGroupExtended()
+				gr.group = gp
+				gr.group_status = request.POST['group_status']
+				gr.group_for_client = request.POST['group_for_client']
+				if request.POST['group_for_client'] == "0":
+					gr.group_subtitulo = ""
+					gr.group_detalle = ""
+					gr.group_sub_detalle = ""
+					gr.group_need_price = ""
+					gr.group_price_month = 0
+					gr.group_price_anual = 0
+					gr.group_price_detalle = ""
+				else:
+					gr.group_subtitulo = request.POST['group_subtitulo'][:50]
+					gr.group_detalle = request.POST['group_detalle'][:500]
+					gr.group_sub_detalle = request.POST['group_sub_detalle'][:500]
+					gr.group_need_price = request.POST['group_need_price']
+					if request.POST['group_need_price'] == "1":
+						gr.group_price_month = is_number(request.POST['group_price_month'])
+						gr.group_price_anual = is_number(request.POST['group_price_anual'])
+						gr.group_price_detalle = ""
+					else:
+						gr.group_price_month = 0
+						gr.group_price_anual = 0
+						gr.group_price_detalle = request.POST['group_price_detalle'][:20]
+				gr.save()
 				for x in request.POST.getlist('permisos'):
 					per = Permission.objects.get(id = x)
 					gp.permissions.add(per)
@@ -49,7 +75,6 @@ def grupos_crear(request):
 		return redirect('grupos_listado')
 	else:
 		listado_permisos = Permission.objects.all().order_by('-content_type')
-
 		ctx = {
 			'listado_permisos':listado_permisos,
 		}
@@ -64,7 +89,31 @@ def grupos_editar(request, id):
 				gp = Group.objects.get(pk = request.POST['id'])
 				gp.name = request.POST['name'][:80]
 				gp.save()
-
+				gr = AuthGroupExtended.objects.get(pk = gp.pk)
+				gr.group_status = request.POST['group_status']
+				gr.group_for_client = request.POST['group_for_client']
+				if request.POST['group_for_client'] == "0":
+					gr.group_subtitulo = ""
+					gr.group_detalle = ""
+					gr.group_sub_detalle = ""
+					gr.group_need_price = ""
+					gr.group_price_month = 0
+					gr.group_price_anual = 0
+					gr.group_price_detalle = ""
+				else:
+					gr.group_subtitulo = request.POST['group_subtitulo'][:50]
+					gr.group_detalle = request.POST['group_detalle'][:500]
+					gr.group_sub_detalle = request.POST['group_sub_detalle'][:500]
+					gr.group_need_price = request.POST['group_need_price']
+					if request.POST['group_need_price'] == "1":
+						gr.group_price_month = is_number(request.POST['group_price_month'])
+						gr.group_price_anual = is_number(request.POST['group_price_anual'])
+						gr.group_price_detalle = ""
+					else:
+						gr.group_price_month = 0
+						gr.group_price_anual = 0
+						gr.group_price_detalle = request.POST['group_price_detalle'][:20]
+				gr.save()
 				gp.permissions.clear()
 				for x in request.POST.getlist('permisos'):
 					per = Permission.objects.get(id = x)
@@ -76,10 +125,12 @@ def grupos_editar(request, id):
 		return redirect('grupos_listado')
 	else:
 		gp = Group.objects.get(pk = id)
+		group = AuthGroupExtended.objects.get(pk = gp.pk)
 		listado_permisos = Permission.objects.all().order_by('-content_type')
 		ctx = {
 			'listado_permisos':listado_permisos,
-			'gp':gp
+			'gp':gp,
+			'group': group
 		}
 		return render(request, 'grupos_editar.html', ctx )
 
